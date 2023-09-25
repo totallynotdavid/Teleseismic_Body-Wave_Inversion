@@ -8,16 +8,16 @@ $sample = 1.0;
 #file check
 if(! -e "hypo" ) {
   print "You need \"hypo\" file in this directory.\n";
-  print "Try again after making \"hypo\" file.\n";
+  print "Try again after making \"hypo\" file!\n";
   exit(0);
 }
 if(! -e "sacmacro" ) {
   print "You need \"sacmacro\" file in this directory.\n";
-  print "Try again after making \"sacmacro\" file.\n";
+  print "Try again after making \"sacmacro\" file!\n";
   exit(0);
 }
 
-@list = `ls *.SAC`;
+@list = `ls *SAC`;
 
 system ("/bin/cp hypo i_conv.farm");
 open IN, ">>i_conv.farm";
@@ -27,13 +27,13 @@ foreach $ev ("@list") {
   @info=split('\.',$ev);
   $year=$info[0];
   $day=$info[1];
-  if ( $ev =~ /D.SAC/ ) {$n=index($ev,"D.SAC");}
-  if ( $ev =~ /Q.SAC/ ) {$n=index($ev,"Q.SAC");}
+  if ( $ev =~ /D.SAC/ ) {$n=index($ev,".D.SAC");}
+  if ( $ev =~ /Q.SAC/ ) {$n=index($ev,".Q.SAC");}
   $m=$n-23;
   $fname=substr($ev,23,$m);
 #  print "oscar: fname = $fname\n";
 #  print "sergio: ev = $ev\n";
-# change file name
+change file name
   system ("/bin/mv $ev $fname");
 }
 
