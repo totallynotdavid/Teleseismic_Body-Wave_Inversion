@@ -1,7 +1,7 @@
       SUBROUTINE ludcmp(a,n,np,indx,d)
       INTEGER n,np,indx(n),NMAX
       REAL d,a(np,np),TINY
-      PARAMETER (NMAX=500,TINY=1.0e-20)
+      PARAMETER (NMAX=10000,TINY=1.0e-20)
       INTEGER i,imax,j,k
       REAL aamax,dum,sum,vv(NMAX)
       d=1.

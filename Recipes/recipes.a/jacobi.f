@@ -1,7 +1,7 @@
       SUBROUTINE jacobi(a,n,np,d,v,nrot)
       INTEGER n,np,nrot,NMAX
       REAL a(np,np),d(np),v(np,np)
-      PARAMETER (NMAX=500)
+      PARAMETER (NMAX=10000)
       INTEGER i,ip,iq,j
       REAL c,g,h,s,sm,t,tau,theta,tresh,b(NMAX),z(NMAX)
       do 12 ip=1,n
