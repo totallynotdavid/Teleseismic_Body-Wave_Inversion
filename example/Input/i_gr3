@@ -1,0 +1,6 @@
+30.0 3 1.0 0 5 6.0
+1 1 1
+1 1.5 0.1
+      read(5,*) spcm,norm,height,line,Nc,Amu
+      read(5,*) npl,nps,fill
+      read(5,*) narw,amp0,tip

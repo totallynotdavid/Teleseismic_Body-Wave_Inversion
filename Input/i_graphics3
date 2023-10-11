@@ -1,4 +1,0 @@
-20.0 3 1.0 0
-1 1 1
-      read(5,*) npl,nps,fill
-      read(5,*) spcm,norm,height,line

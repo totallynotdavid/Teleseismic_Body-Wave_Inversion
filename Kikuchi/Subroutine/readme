@@ -1,0 +1,9 @@
+----How to update library-file--------
+
+f77 -c *.f	: Compile a source program
+ar q mylib.a *.o	: Add an object module to mylib.a
+(ar r mylib.a *.o	: replace an object module in mylib.a)
+ranlib mylib.a		: Randomize mylib.a
+
+ar t mylib.a		: Tabilize mylib.a
+rm *.o		: Remove the object module
