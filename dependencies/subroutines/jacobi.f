@@ -87,6 +87,7 @@
           z(ip)=0.
 23      continue
 24    continue
-      pause 'too many iterations in jacobi'
+      PRINT *, 'singular matrix in ludcmp'
+      STOP
       return
       END
