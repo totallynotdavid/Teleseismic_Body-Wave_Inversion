@@ -1,15 +1,14 @@
 #!/bin/bash
 
-# Navigate to the directory where the files are located
-# cd /path/to/your/files
+# Navegar al directorio donde se encuentran los archivos
+# cd /path-al-directorio
 
-# Loop through all SAC files and check if they don't match the 00.BH* pattern
+# Iterar sobre todos los archivos SAC y verificar si no coinciden con el patrón 00.BH*
 for file in *.SAC; do
     if [[ ! $file =~ "00.BH" ]]; then
-        # Delete the file
         rm "$file"
-        echo "Removed: $file"
+        echo "$file fue eliminado."
     fi
 done
 
-echo "Filtering completed!"
+echo "Filtrado completado."
