@@ -1,0 +1,10 @@
+----How to update library-file--------
+
+ifort -c *.f	      : Compile a source program
+ar q recipes.a *.o    : Add an object module to mylib.a
+(ar r recipes.a *.o   : replace an object module in mylib.a)
+ranlib recipes.a      : Randomize mylib.a
+
+ar t recipes.a	      : Tabilize mylib.a
+rm *.o		          : Remove the object module
+
