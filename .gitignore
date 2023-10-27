@@ -1,1 +1,4 @@
 *.SAC
+
+/paper/build/*
+!/paper/build/*.pdf
