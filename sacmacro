@@ -1,6 +1,11 @@
-r  *.*.*.??E 
-w  alpha append .A 
-r  *.*.*.??N 
-w  alpha append .A 
-r  *.*.*.??Z 
-w  alpha append .A
+r *.*.*.??E
+w alpha append .A
+r *.*.*.??1
+w alpha append .A
+r *.*.*.??N
+w alpha append .A
+r *.*.*.??2
+w alpha append .A
+r *.*.*.??Z
+w alpha append .A
+

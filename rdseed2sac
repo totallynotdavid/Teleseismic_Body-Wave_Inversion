@@ -1,0 +1,11 @@
+# Macro para cambiar de formato de RDSEED a SAC
+# Cesar Jimenez 07 Feb 2013
+
+rdseed -f salomon2013.seed -R -d -o 1
+# rdseed -f salomon2013.seed -p -d -o 1
+rm 2013*.10.BH*
+rm 2013*.AU.*
+# rm 2013*.G.*
+mk_conv.farm.pl
+conv.sac.farm < i_conv.farm
+rotSH
