@@ -2,3 +2,6 @@
 
 /paper/build/*
 !/paper/build/*.pdf
+
+scripts/python/Data/*
+scripts/python/dataless_files/*
