@@ -1,9 +1,13 @@
 #!/bin/bash
+# Este script fue creado para instalar las dependencias necesarias para el
+# funcionamiento del modelo de Kikuchi y Kanamori; y sus respectivas dependencias.
 
-# Instalador de Rdseed y SAC para análisis sísmico
+obtener_ubicacion_repo() {
+    git rev-parse --show-toplevel
+}
 
 # Directorio para guardar los archivos comprimidos
-DIRECTORIO_ZIPS="dependencies/" #
+DIRECTORIO_ZIPS="$(obtener_ubicacion_repo)/dependencies/"
 
 # Comprobar y/o crear el directorio de dependencias
 if [ ! -d "$DIRECTORIO_ZIPS" ]; then
@@ -12,8 +16,9 @@ fi
 
 # Instalación de paquetes necesarios
 echo "Instalando paquetes necesarios..."
-sudo apt update
-sudo apt install fort77 libtirpc-dev libc6-dev libncurses5 -y
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install fort77 default-jre perl libtirpc-dev libc6-dev libncurses5 -y
 
 # Instalación de Rdseed
 RDSEED_OUTPUT=$(timeout 2s rdseed 2>&1)
