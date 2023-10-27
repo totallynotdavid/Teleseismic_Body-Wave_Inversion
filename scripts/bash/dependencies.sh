@@ -49,7 +49,7 @@ else
 
     echo "Por favor, descargue SAC manualmente desde el siguiente enlace y colóquelo en $DIRECTORIO_ZIPS:"
     echo " http://ds.iris.edu/ds/nodes/dmc/forms/sac/"
-    read -p "Presione cualquier tecla una vez que tenga el archivo sac*.tar.gz en $DIRECTORIO_ZIPS..."
+    read -p "Presiona enter una vez que tenga el archivo sac*.tar.gz en $DIRECTORIO_ZIPS..."
 
     SAC_TAR=$(ls $DIRECTORIO_ZIPS/sac*.tar.gz)
     tar -xf $SAC_TAR
