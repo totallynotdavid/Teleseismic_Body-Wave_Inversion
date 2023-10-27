@@ -75,8 +75,8 @@ def download_dataless(network, station, starttime, endtime):
 
         transform_xml_to_dataless(file_path)
     else:
-        print(f"Hubo un error al descargar los metadatos de dataless SEED para `{network} {station}`. 
-              Código de estado: {response.status_code}")
+        print(f"""Hubo un error al descargar los metadatos de dataless SEED para `{network} {station}`. 
+              Código de estado: {response.status_code}""")
 
 def transform_xml_to_dataless(xml_file):
     """
@@ -111,8 +111,8 @@ def download_miniseed(network, station, starttime, endtime):
             file.write(response.content)
         print(f"Descargado miniSEED: {filename}")
     else:
-        print(f"Ha ocurrido un error al descargar los datos miniSEED para `{network} {station}`. 
-              Código de estado: {response.status_code}")
+        print(f"""Ha ocurrido un error al descargar los datos miniSEED para `{network} {station}`. 
+              Código de estado: {response.status_code}""")
 
 # Programa principal
 if __name__ == "__main__":
@@ -136,4 +136,4 @@ if __name__ == "__main__":
             print(f"Ejecutando: {cmd}")
             subprocess.run(cmd, shell=True)
         else:
-            print(f"Ha habido un error al convertir {miniseed_file} a SAC. Faltan los metadatos StationXML o los datos miniSEED.")
+            print(f"""Ha habido un error al convertir {miniseed_file} a SAC. Faltan los metadatos StationXML o los datos miniSEED.""")
