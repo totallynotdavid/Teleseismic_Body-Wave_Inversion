@@ -2,10 +2,12 @@ import os
 import subprocess
 import requests
 import re
+import utils
 
 # Configuración y endpoints
-DATA_DIR = "Data"
-OUTPUT_DIR = "dataless_files"
+DATA_DIR = "data/preprocess/data"
+OUTPUT_DIR = "data/preprocess/dataless_files"
+STATIONXML_PATH = os.path.join(utils.obtener_ubicacion_repo(), "dependencies/stationxml-seed-converter-2.1.3.jar")
 STATION_URL = "http://service.iris.edu/fdsnws/station/1/query"
 DATASELECT_URL = "http://service.iris.edu/fdsnws/dataselect/1/query"
 
@@ -83,7 +85,7 @@ def transform_xml_to_dataless(xml_file):
     Convertir XML a dataless SEED.
     """
     dataless_file = xml_file.replace('.xml', '.dataless')
-    cmd = f"java -jar stationxml-seed-converter-2.1.3.jar -i {xml_file} -o {dataless_file}"
+    cmd = f"java -jar {STATIONXML_PATH} -i {xml_file} -o {dataless_file}"
     print(f"Ejecutando: {cmd}")
     subprocess.run(cmd, shell=True)
 

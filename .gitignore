@@ -3,5 +3,7 @@
 /paper/build/*
 !/paper/build/*.pdf
 
-scripts/python/Data/*
-scripts/python/dataless_files/*
+data/preprocess/data/*
+data/preprocess/dataless_files/*
+
+**/__pycache__/*
