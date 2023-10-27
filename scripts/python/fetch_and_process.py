@@ -3,13 +3,13 @@ import subprocess
 import requests
 import re
 
-# Configuration
+# Configuración y endpoints
 DATA_DIR = "Data"
+OUTPUT_DIR = "dataless_files"
 STATION_URL = "http://service.iris.edu/fdsnws/station/1/query"
 DATASELECT_URL = "http://service.iris.edu/fdsnws/dataselect/1/query"
-OUTPUT_DIR = "dataless_files"
 
-# Stations and their corresponding network
+# Estaciones y redes a descargar
 STATIONS = [
     ("II", "ASCN"),  # Butt Crater, Ascension Island
     ("IU", "CCM"),  # Cathedral Cave, Missouri, USA
@@ -28,31 +28,35 @@ STATIONS = [
     ("G",  "UNM")   # Unam, Mexico, Mexico
 ]
 
-# Event Information
+# Información sobre el evento
 EVENT_INFO = {
     "latitude": -9.6915,
     "longitude": -79.767,
-    "starttime": "1996-02-21T12:46:01",  # 5 minutes before the event
-    "endtime": "1996-02-21T13:51:01"     # 60 minutes after the event
+    "starttime": "1996-02-21T12:46:01",  # 5 minutos antes del evento
+    "endtime": "1996-02-21T13:51:01"     # 60 minutos después del evento
 }
 
-# Create output directories
+# Asegurarse que los directorios existan
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def sanitize_filename(filename):
-    """Sanitize filename by replacing non-alphanumeric characters, except for 'T', with underscores."""
-    sanitized_name = re.sub(r'[^a-zA-Z0-9_T.]', '_', filename)  # Preserve 'T'
-    sanitized_name = sanitized_name.replace('T', '_')  # Replace "T" between date and time with an underscore
+    """
+    Sanitizar el nombre del archivo reemplazando los caracteres no alfanuméricos, excepto 'T', con guiones bajos.
+    """
+    sanitized_name = re.sub(r'[^a-zA-Z0-9_T.]', '_', filename)  # Preservar la 'T' entre fecha y hora
+    sanitized_name = sanitized_name.replace('T', '_')  # Reemplazar la 'T' con un guión bajo
     return sanitized_name
 
 def download_dataless(network, station, starttime, endtime):
-    """Download the dataless SEED metadata for a given network, station, and time window."""
+    """
+    Descargar los metadatos de dataless SEED para una red, estación y ventana de tiempo dada.
+    """
     filename = sanitize_filename(f"{network}_{station}_{starttime.replace(':', '_').replace('-', '_')}.xml")
     file_path = os.path.join(OUTPUT_DIR, filename)
     
     if os.path.exists(file_path):
-        print(f"Dataless SEED metadata for {network} {station} already exists. Skipping download.")
+        print(f"Los Dataless SEED metadata para `{network} {station}` ya existe. Saltando la descarga.")
         return
     
     params = {
@@ -61,32 +65,37 @@ def download_dataless(network, station, starttime, endtime):
         "starttime": starttime,
         "endtime": endtime,
         "level": "response",
-        "format": "xml"  # StationXML format
+        "format": "xml"  # Formato de salida. StationXML.
     }
     response = requests.get(STATION_URL, params=params)
     if response.status_code == 200:
         with open(file_path, 'wb') as file:
             file.write(response.content)
-        print(f"Downloaded: {filename}")
+        print(f"Descargado: {filename}")
 
         transform_xml_to_dataless(file_path)
     else:
-        print(f"Failed to download data for {network} {station}. Status code: {response.status_code}")
+        print(f"Hubo un error al descargar los metadatos de dataless SEED para `{network} {station}`. 
+              Código de estado: {response.status_code}")
 
 def transform_xml_to_dataless(xml_file):
-    """Convert XML to dataless SEED."""
+    """
+    Convertir XML a dataless SEED.
+    """
     dataless_file = xml_file.replace('.xml', '.dataless')
     cmd = f"java -jar stationxml-seed-converter-2.1.3.jar -i {xml_file} -o {dataless_file}"
-    print(f"Running command: {cmd}")
+    print(f"Ejecutando: {cmd}")
     subprocess.run(cmd, shell=True)
 
 def download_miniseed(network, station, starttime, endtime):
-    """Download miniSEED data for the specified parameters."""
+    """
+    Descargar datos miniSEED para los parámetros definidos en la configuración
+    """
     filename = f"{network}_{station}.mseed"
     file_path = os.path.join(DATA_DIR, filename)
-    
+
     if os.path.exists(file_path):
-        print(f"MiniSEED data for {network} {station} already exists. Skipping download.")
+        print(f"MiniSEED data para {network} {station} ya existe. Saltando la descarga.")
         return
 
     params = {
@@ -100,29 +109,31 @@ def download_miniseed(network, station, starttime, endtime):
     if response.status_code == 200:
         with open(file_path, 'wb') as file:
             file.write(response.content)
-        print(f"Downloaded miniSEED: {filename}")
+        print(f"Descargado miniSEED: {filename}")
     else:
-        print(f"Failed to download miniSEED for {network} {station}. Status code: {response.status_code}")
+        print(f"Ha ocurrido un error al descargar los datos miniSEED para `{network} {station}`. 
+              Código de estado: {response.status_code}")
 
+# Programa principal
 if __name__ == "__main__":
-    # Download miniSEED Data and StationXML Metadata
+    # Descargar los datos miniSEED y los metadatos StationXML para cada estación
     for network, station in STATIONS:
         download_miniseed(network, station, EVENT_INFO["starttime"], EVENT_INFO["endtime"])
         download_dataless(network, station, EVENT_INFO["starttime"], EVENT_INFO["endtime"])
 
-    # Move to DATA_DIR for rdseed operations
+    # Mover a DATA_DIR para las operaciones de rdseed
     os.chdir(DATA_DIR)
 
-    # Convert miniSEED to SAC using rdseed
+    # Convertir miniSEED a SAC usando rdseed
     for network, station in STATIONS:
         miniseed_file = f"{network}_{station}.mseed"
         dataless_file = sanitize_filename(f"{network}_{station}_{EVENT_INFO['starttime']}.dataless")
         dataless_file_path = os.path.join(os.pardir, OUTPUT_DIR, dataless_file)
 
         if os.path.exists(miniseed_file) and os.path.exists(dataless_file_path):
-            print(f"Converting {miniseed_file} to SAC using dataless SEED file...")
+            print(f"Convirtiendo {miniseed_file} a SAC usando el archivo dataless SEED...")
             cmd = f"rdseed -f {miniseed_file} -R -d -o 1 -p -g {dataless_file_path}"
-            print(f"Running command: {cmd}")
+            print(f"Ejecutando: {cmd}")
             subprocess.run(cmd, shell=True)
         else:
-            print(f"Failed to convert {miniseed_file} to SAC. Missing StationXML metadata or miniSEED data.")
+            print(f"Ha habido un error al convertir {miniseed_file} a SAC. Faltan los metadatos StationXML o los datos miniSEED.")
