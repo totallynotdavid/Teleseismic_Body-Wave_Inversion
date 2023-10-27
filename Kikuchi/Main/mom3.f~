@@ -28,7 +28,7 @@ CC       t1,dlt,Nw specify a series of triangle time-functions
 CC         t1: half of triangle base, dlt:time-shift
 CC         nw: number of triangles
 CC    Njs,(Fc(j),j=1,Njs)
-CC       Number of wave-records, weight factors.   
+CC       Number of wave-records, weight factors   
 CC    Njs must be less than Nj0
 CC    Nt: Sample number of each Green's function (power of 2)
 CC----------------------------------------------------
@@ -40,7 +40,7 @@ CC   Number of unknowns, Ne=Nx*Ny*Nw*2
 CC       '2' comes from two slip directions
 CC   Ne must be less than Ne0
 CC============================= Ver. 020101 ======================
-      PARAMETER (Nd0=40000,Nd1=500,Ne0=2000,Nj0=150,Nl0=10
+      PARAMETER (Nd0=30000,Nd1=500,Ne0=1000,Nj0=120,Nl0=10
      -,  PI=3.141593,RAD=.0174533)
       IMPLICIT COMPLEX*8 (Z)
       character Nam(NJ0)*12,Name*40,Dsn*40,Inf*15
@@ -205,7 +205,7 @@ C
 63     rd0=rd0+Rw(k,n)**2
 62    Rh(k)=x(i,j)
        Nij=k
-       print *, ' Number of Data Nij & unknowns Ne = ', Nij, Ne
+       print *, ' Numbers of Data & unknowns = ', Nij, Ne
        if(Ne.gt.Ne0) stop
 CCC
 C  Smoothness constraint
@@ -238,14 +238,6 @@ C
        print *, ' Number of observation equations: Nijk =',Nijk
         if (Nijk.gt.Nd0) stop
 C
-c Changed by C Jimenez 07 Ene 2016
-c      DO 26 I=1,Nijk
-c26     WRITE (70,'(10000F10.4)')(Rw(I,J), J=1,Ne)
-c
-c      DO 24 J=1,Nijk
-c24     write(71,'(1F10.4)') Rh(j)
-c Fin cjimenez
-c
 C Non-Negative Least Squares
 C
       call nnls(Rw,Nd0,Nijk,Ne,Rh,Mo,rnorm,wk,azz,iwk,mode)

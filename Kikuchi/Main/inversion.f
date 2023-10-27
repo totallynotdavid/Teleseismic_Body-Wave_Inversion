@@ -33,6 +33,7 @@
      -,     Mw
        DATA XPOWER,EROR(0),nbase/0,1,5,5,2,6,4/
 * < Input from unit 5 >
+      OPEN(5,FILE='i_inversion')
       READ(5,'(A)') ID
       READ(5,*) TL,V1
       READ(5,*) MS,T1,T2

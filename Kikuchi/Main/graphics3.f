@@ -16,6 +16,7 @@
        data amp/0,0,0,0/
        data comp/'UD','NS','EW'/
        data phas/'P ','SV','SH','PP'/
+      OPEN(5,FILE='i_graphics3')
       read(5,*) spcm,norm,height,line
       read(5,*) npl,nps,fill
 * < from unit 15 >
@@ -48,7 +49,7 @@
          XL=NT*DT/spcm
          XL1=(NTe*DT+t1+t2)/spcm
 	 tu=dt*dx
-	 open(8,fiLe='plot38')
+	 open(8,fiLe='plot38.ps')
 	 call plots(8)
         CALL INITG(ID,T1,T2,EROR)
 * < Source time function >

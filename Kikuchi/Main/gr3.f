@@ -20,7 +20,7 @@ CC        amp0: maximum length [cm] of the slip vector
 CC        tip: maximum length [cm] of the arrow
 CC
 CC============================ Ver.030705 ===============
-       PARAMETER (ND0=1024,NL0=31,NJ0=40,nk0=31,NE0=1000,RAD=.01745329)
+       PARAMETER (ND0=4096,NL0=31,NJ0=120,nk0=31,NE0=1000,RAD=.01745329)
        CHARACTER ID*40,NAM(NJ0)*12,phas(4)*2,comp(3)*2,chrc*55
        INTEGER  IM(NJ0),IB(NJ0),IC(NJ0),Icont(nl0,nk0)
        REAL  MO(NE0),SO(ND0),amp(4),Ts(NE0),xs(NE0),ys(NE0)
@@ -30,6 +30,7 @@ CC============================ Ver.030705 ===============
        data amp/0,0,0,0/
        data comp/'UD','NS','EW'/
        data phas/'P ','SV','SH','PP'/
+      OPEN(5,FILE='i_gr3')
       read(5,*) spcm,norm,height,line,Nc,Amu
       read(5,*) npl,nps,fill
       read(5,*) narw,amp0,tip
@@ -76,7 +77,7 @@ CC============================ Ver.030705 ===============
       DO 10 i=1,NE
 10       GMO=MAX(GMO,ABS(MO(I)))
          XL=NT*DT/spcm
-	 open(8,fiLe='plot3')
+	 open(8,fiLe='plot3.ps')
 	 call plots(8)
       CALL PLOT(3.,23.,-3)
       CALL SYMBOL(0.,4.,.45,ID,0.,40)
@@ -84,8 +85,9 @@ CC============================ Ver.030705 ===============
          write(chrc,'(a,g12.3,a,f7.2)')
      -      'Mo =',Tmom*1.e18,' Nm   Mw =',Amw
           call symbol(0.,3.0,.3,chrc,0.,35)
-         write(chrc,'(a,f6.1,a,f8.4)')
-     -     'H =',H0,'km   T =    s   var. =',eror
+         write(chrc,'(a,f6.1,a,f6.2)')
+     -     'H =',H0,' km     var =',eror
+c    -     'H =',H0,' km  slip =',Fmax,' s   var =',eror
           call symbol(0.,2.0,.3,chrc,0.,55)
 C
 C < Source time function >

@@ -22,9 +22,18 @@
       DIMENSION Z(nd0),zpole(50),zero(50)
       data np,cmp/8,'disp.','vel. ','acc. ','orig.'/
       common /tbl/ip(110,14),is(110,14),secp(110,14),secs(110,14)
+c     OPEN(5,FILE='hypo')
       read(5,'(a)') event
       read(5,*) alats,alons,depth,hr0,mnu0,sec0,id,delmin,delmax
          depth0=depth
+c Modified by cjimenez
+c Corrige cuando el tiempo origen es cerca a las 24 horas
+      if ((hr0.eq.23).and.(mnu0.gt.55)) then
+          hr0 = 0
+          mnu0 = -60+mnu0+1
+          sec0 = -60+sec0
+      end if
+c Fin cjimenez
       write(22,'(a,a5,3f7.2,2i3,f6.2)') 
      #            event,cmp(id),alats,alons,depth,hr0,mnu0,sec0
 * << J-B travel time table >>
@@ -54,15 +63,15 @@ c    add iuni
       read(5,*) ta,du,dt,f1,f2,iph,nr,iuni
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       open(1,file=fname)
-      READ(1,'(g15.7)') dt0
+      read(1,'(g15.7)') dt0
       read(1,'(/////5g15.7)') dum, alat, alon, elev
       read(1,'(///////5i10)') yr, nday, hr,mnu, nsec
       read(1,'(5i10)') nmsec,ndum,ndum,ndum,nd
       read(1,'(/////)')
-       read(1,'(a6,2x,a13)') name,charac
+      read(1,'(a6,2x,a13)') name,charac
       read(1,'(////)')
 C   format is changed on 00/03/29
-       read(1,'(16x,a6)') comp
+      read(1,'(16x,a6)') comp
 C      read(1,'(16x,a4)') comp
       read(1,*)
       read(1,*) (x(i),i=1,nd)
@@ -71,8 +80,8 @@ C      read(1,'(16x,a4)') comp
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
        icomp=0
        if(index(comp,'LHZ')+index(comp,'BHZ').ne.0) icomp=1
-       if(index(comp,'LHN')+index(comp,'BHN').ne.0) icomp=2
-       if(index(comp,'LHE')+index(comp,'BHE').ne.0) icomp=3
+       if(index(comp,'BH2')+index(comp,'BHN').ne.0) icomp=2
+       if(index(comp,'BH1')+index(comp,'BHE').ne.0) icomp=3
         if(icomp.eq.0) then
        if(index(comp,'MHZ').ne.0) icomp=1
        if(index(comp,'MHN').ne.0) icomp=2

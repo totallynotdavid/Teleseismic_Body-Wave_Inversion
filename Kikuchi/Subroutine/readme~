@@ -6,5 +6,5 @@ ar q mylib.a *.o    : Add an object module to mylib.a
 ranlib mylib.a	    : Randomize mylib.a
 
 ar t mylib.a	    : Tabilize mylib.a
-rm *.o		    : Remove the object module
+rm *.o		        : Remove the object module
 

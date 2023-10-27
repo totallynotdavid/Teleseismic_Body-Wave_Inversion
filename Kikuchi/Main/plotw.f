@@ -10,12 +10,14 @@
        REAL  x(nd0),y(nd0)
        data phas/'P ','SV','SH','PP'/
        data comp/'UD','NS','EW'/
+      OPEN(5,FILE='i_plotw')
       READ(5,'(a)') Inf
       READ(5,*) spcm,amp,ishift,tlen,line,pw,dy,ny,norm
       if(norm.eq.1) read(5,*) camp
+      close(5)
       open(1,file=Inf)
       READ(1,'(A40)') DSN
-      open(8,file='plot.w')
+      open(8,file='plot_w.ps')
       call plots(8)
           xshift=3.
           xlen=tlen/spcm

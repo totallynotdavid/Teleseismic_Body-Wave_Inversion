@@ -24,6 +24,7 @@
        DATA XPOWER,nbase/0,5,5,2,6,4/
 
 * < from unit 5 >
+      OPEN(5,FILE='i_plotcm')
       READ(5,'(A40)') ID
       READ(5,*) TL,TE,V1,dur,kk
 C
@@ -53,7 +54,7 @@ C
 1          FFI(L)=SK0
       ENDIF
 
-      open(8,file='plot.cm')
+      open(8,file='plot_cm.ps')
       call plots(8)
       JS=1
       READ(1,'(A40)') DSN

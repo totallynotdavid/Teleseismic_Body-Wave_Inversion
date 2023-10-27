@@ -28,6 +28,7 @@
 
 * < from unit 5 >
 *         NT should be powers of 2.
+      OPEN(5,FILE='i_green')
       READ(5,*) NT,DT,H0,DK,NK,K0,DIP
          DF=1/(DT*NT)
          DW=DF*2*PI

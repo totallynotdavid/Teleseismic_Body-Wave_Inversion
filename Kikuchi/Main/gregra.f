@@ -7,6 +7,7 @@
        PARAMETER (ND0=1024,NM=6,NK0=10,NJ0=40,RAD=.01745329)
        CHARACTER DSN*40,NAM(NJ0)*12
        REAL      W(ND0,NM,NK0,NJ0),SO(ND0),X(ND0,NM,NK0)
+      OPEN(5,FILE='i_gregra')
        READ(5,*) TL,MS,T1,T2,spcm,height,line,Amag
       JS=0
       READ(3) DSN, VP,VS,DT,H0,DK,DIP,NK,K0,INTV
@@ -20,7 +21,7 @@
 1     READ(3) (W(I,N,K,JS),I=1,INTV)
            GOTO 100
 999     continue
-	   open(8,file='plot.g')
+	   open(8,file='plot_g.ps')
 	   call plots(8)
 	   call initg(dsn,t1,t2,h0)
         DO 31 K=1,NK

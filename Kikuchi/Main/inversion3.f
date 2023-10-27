@@ -19,6 +19,7 @@
      -,      EROR(0:50),V(NJ0)
        DATA XPOWER,EROR(0)/0,1/
 * < from unit 5 >
+      OPEN(5,FILE='i_inversion3')
       READ(5,'(A40)') ID
       READ(5,*) TL,V1,TE
       READ(5,*) MS,T1,T2

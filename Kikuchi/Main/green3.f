@@ -21,6 +21,7 @@
       READ(2,*) NL2,(VP2(L),VS2(L),DEN2(L),DEP2(L),L=1,NL2)
 * < from unit 5 >
 *         NT should be powers of 2.
+      OPEN(5,FILE='i_green3')
       READ(5,*) NT,DT,STK,DIP,SLIP,H0,DK,NK,K0
          DF=1/(DT*NT)
          DW=DF*2*PI
