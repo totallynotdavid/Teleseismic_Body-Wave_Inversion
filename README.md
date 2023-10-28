@@ -4,7 +4,7 @@
 
 El modelo de Kikuchi y Kanamori es una herramienta esencial para el análisis sísmico. Si deseas obtener una descripción detallada o acceder a la versión original del modelo, puedes hacerlo a través de [su sitio web oficial](https://wwweic.eri.u-tokyo.ac.jp/ETAL/KIKUCHI/).
 
-## 🛠 Pre-requisitos
+## 🛠 Prerrequisitos
 
 Para hacer uso de este modelo, necesitarás instalar ciertas herramientas externas. ¡No te preocupes! Hemos automatizado este proceso para facilitártelo:
 
