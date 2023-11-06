@@ -14,9 +14,6 @@
   "explorer.confirmDragAndDrop": false,
   "window.autoDetectColorScheme": true,
   "workbench.editor.closeOnFileDelete": true,
-  "files.eol": "\n",
-  "files.insertFinalNewline": true,
-  "files.simpleDialog.enable": true,
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
@@ -28,20 +25,5 @@
   "diffEditor.ignoreTrimWhitespace": false,
   "search.exclude": {
     "**/.git": true,
-    "**/.github": true,
-    "**/.nuxt": true,
-    "**/.output": true,
-    "**/.pnpm": true,
-    "**/.vscode": true,
-    "**/.yarn": true,
-    "**/bower_components": true,
-    "**/dist/**": true,
-    "**/logs": true,
-    "**/node_modules": true,
-    "**/out/**": true,
-    "**/package-lock.json": true,
-    "**/pnpm-lock.yaml": true,
-    "**/tmp": true,
-    "**/yarn.lock": true
   }
 }
