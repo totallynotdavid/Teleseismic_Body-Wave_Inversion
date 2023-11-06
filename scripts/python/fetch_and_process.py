@@ -5,14 +5,12 @@ import re
 import utils
 
 # Configuración y endpoints
-DATA_DIR = "data/preprocess/data"
-OUTPUT_DIR = "data/preprocess/dataless_files"
-RDSEED_OUTPUT_DIR = "data/preprocess/rdseed_output"
+MINISEED_DIR = "data/preprocess"
+OUTPUT_DIR = "data/preprocess"
+SAC_DIR = "data/preprocess"
 STATIONXML_PATH = os.path.join(utils.obtener_ubicacion_repo(), "dependencies/stationxml-seed-converter-2.1.3.jar")
 STATION_URL = "http://service.iris.edu/fdsnws/station/1/query"
 DATASELECT_URL = "http://service.iris.edu/fdsnws/dataselect/1/query"
-
-os.makedirs(RDSEED_OUTPUT_DIR, exist_ok=True)
 
 # Estaciones y redes a descargar
 STATIONS = [
@@ -20,17 +18,17 @@ STATIONS = [
     ("IU", "CCM"),  # Cathedral Cave, Missouri, USA
     ("IU", "COL"),  # College Outpost, Alaska, USA
     ("IU", "COR"),  # Corvallis, Oregon, USA
-    # ("CN", "FFC"),  # Flin Flon, Canada
-    ("IU", "HKT"),  # Hockley, Texas
-    ("IU", "HRV"),  # Adam Dziewonski Observatory, Massachusetts, USA
-    ("G",  "KOG"),  # Kourou, French Guiana, France
-    ("IU", "PAB"),  # San Pablo, Spain
-    ("CI", "PFO"),  # Pinon Flat, California, USA
-    ("II", "RPN"),  # Rapanui, Easter Island, Chile
-    ("IU", "SPA"),  # South Pole, Antarctica
-    ("G",  "TAM"),  # Tamanrasset, Algeria
-    ("IU", "TUC"),  # Tucson, Arizona
-    ("G",  "UNM")   # Unam, Mexico, Mexico
+    # ("CN", "FFC"),  # Flin Flon, Canada (no hay datos)
+    # ("IU", "HKT"),  # Hockley, Texas
+    # ("IU", "HRV"),  # Adam Dziewonski Observatory, Massachusetts, USA
+    # ("G",  "KOG"),  # Kourou, French Guiana, France
+    # ("IU", "PAB"),  # San Pablo, Spain
+    # ("CI", "PFO"),  # Pinon Flat, California, USA
+    # ("II", "RPN"),  # Rapanui, Easter Island, Chile
+    # ("IU", "SPA"),  # South Pole, Antarctica
+    # ("G",  "TAM"),  # Tamanrasset, Algeria
+    # ("IU", "TUC"),  # Tucson, Arizona
+    # ("G",  "UNM")   # Unam, Mexico, Mexico
 ]
 
 # Información sobre el evento
@@ -42,9 +40,8 @@ EVENT_INFO = {
     "endtime": "1996-02-21T13:51:01"     # 60 minutos después del evento
 }
 
-# Asegurarse que los directorios existan
-os.makedirs(DATA_DIR, exist_ok=True)
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+# Asegurar que los directorios existan
+os.makedirs(SAC_DIR, exist_ok=True)
 
 def sanitize_filename(filename):
     """
@@ -98,7 +95,7 @@ def download_miniseed(network, station, starttime, endtime):
     Descargar datos miniSEED para los parámetros definidos en la configuración
     """
     filename = f"{network}_{station}.mseed"
-    file_path = os.path.join(DATA_DIR, filename)
+    file_path = os.path.join(MINISEED_DIR, filename)
 
     if os.path.exists(file_path):
         print(f"MiniSEED data para {network} {station} ya existe. Saltando la descarga.")
@@ -132,11 +129,11 @@ if __name__ == "__main__":
         miniseed_file = f"{network}_{station}.mseed"
         dataless_file = sanitize_filename(f"{network}_{station}_{EVENT_INFO['starttime']}.dataless")
         dataless_file_path = os.path.join(os.getcwd(), OUTPUT_DIR, dataless_file)
-        miniseed_file_path = os.path.join(os.getcwd(), DATA_DIR, miniseed_file)
+        miniseed_file_path = os.path.join(os.getcwd(), MINISEED_DIR, miniseed_file)
 
         if os.path.exists(miniseed_file_path) and os.path.exists(dataless_file_path):
             print(f"Convirtiendo {miniseed_file_path} a SAC usando el archivo dataless SEED...")
-            cmd = f"rdseed -f {miniseed_file_path} -R -d -o 1 -p -g {dataless_file_path} -q {RDSEED_OUTPUT_DIR}"
+            cmd = f"rdseed -f {miniseed_file_path} -R -d -o 1 -p -g {dataless_file_path} -q {SAC_DIR}"
             print(f"Ejecutando: {cmd}")
             result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             print(result.stdout.decode())

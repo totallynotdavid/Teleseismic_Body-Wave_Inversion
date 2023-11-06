@@ -5,7 +5,6 @@ RESP*
 /paper/build/*
 !/paper/build/*.pdf
 
-data/preprocess/data/*
-data/preprocess/dataless_files/*
+data/preprocess/*
 
 **/__pycache__/*
