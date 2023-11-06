@@ -7,9 +7,12 @@ import utils
 # Configuración y endpoints
 DATA_DIR = "data/preprocess/data"
 OUTPUT_DIR = "data/preprocess/dataless_files"
+RDSEED_OUTPUT_DIR = "data/preprocess/rdseed_output"
 STATIONXML_PATH = os.path.join(utils.obtener_ubicacion_repo(), "dependencies/stationxml-seed-converter-2.1.3.jar")
 STATION_URL = "http://service.iris.edu/fdsnws/station/1/query"
 DATASELECT_URL = "http://service.iris.edu/fdsnws/dataselect/1/query"
+
+os.makedirs(RDSEED_OUTPUT_DIR, exist_ok=True)
 
 # Estaciones y redes a descargar
 STATIONS = [
@@ -130,10 +133,10 @@ if __name__ == "__main__":
         dataless_file = sanitize_filename(f"{network}_{station}_{EVENT_INFO['starttime']}.dataless")
         dataless_file_path = os.path.join(os.getcwd(), OUTPUT_DIR, dataless_file)
         miniseed_file_path = os.path.join(os.getcwd(), DATA_DIR, miniseed_file)
-  
+
         if os.path.exists(miniseed_file_path) and os.path.exists(dataless_file_path):
             print(f"Convirtiendo {miniseed_file_path} a SAC usando el archivo dataless SEED...")
-            cmd = f"rdseed -f {miniseed_file_path} -R -d -o 1 -p -g {dataless_file_path}"
+            cmd = f"rdseed -f {miniseed_file_path} -R -d -o 1 -p -g {dataless_file_path} -q {RDSEED_OUTPUT_DIR}"
             print(f"Ejecutando: {cmd}")
             result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             print(result.stdout.decode())
