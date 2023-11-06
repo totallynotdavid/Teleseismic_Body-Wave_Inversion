@@ -17,7 +17,7 @@ STATIONS = [
     ("IU", "CCM"),  # Cathedral Cave, Missouri, USA
     ("IU", "COL"),  # College Outpost, Alaska, USA
     ("IU", "COR"),  # Corvallis, Oregon, USA
-    ("CN", "FFC"),  # Flin Flon, Canada
+    # ("CN", "FFC"),  # Flin Flon, Canada
     ("IU", "HKT"),  # Hockley, Texas
     ("IU", "HRV"),  # Adam Dziewonski Observatory, Massachusetts, USA
     ("G",  "KOG"),  # Kourou, French Guiana, France
@@ -32,8 +32,9 @@ STATIONS = [
 
 # Información sobre el evento
 EVENT_INFO = {
-    "latitude": -9.6915,
-    "longitude": -79.767,
+    # Latitud y longitud no son relevantes
+    # "latitude": -9.6915,
+    # "longitude": -79.767,
     "starttime": "1996-02-21T12:46:01",  # 5 minutos antes del evento
     "endtime": "1996-02-21T13:51:01"     # 60 minutos después del evento
 }
@@ -123,19 +124,18 @@ if __name__ == "__main__":
         download_miniseed(network, station, EVENT_INFO["starttime"], EVENT_INFO["endtime"])
         download_dataless(network, station, EVENT_INFO["starttime"], EVENT_INFO["endtime"])
 
-    # Mover a DATA_DIR para las operaciones de rdseed
-    os.chdir(DATA_DIR)
-
     # Convertir miniSEED a SAC usando rdseed
     for network, station in STATIONS:
         miniseed_file = f"{network}_{station}.mseed"
         dataless_file = sanitize_filename(f"{network}_{station}_{EVENT_INFO['starttime']}.dataless")
-        dataless_file_path = os.path.join(os.pardir, OUTPUT_DIR, dataless_file)
-
-        if os.path.exists(miniseed_file) and os.path.exists(dataless_file_path):
-            print(f"Convirtiendo {miniseed_file} a SAC usando el archivo dataless SEED...")
-            cmd = f"rdseed -f {miniseed_file} -R -d -o 1 -p -g {dataless_file_path}"
+        dataless_file_path = os.path.join(os.getcwd(), OUTPUT_DIR, dataless_file)
+        miniseed_file_path = os.path.join(os.getcwd(), DATA_DIR, miniseed_file)
+  
+        if os.path.exists(miniseed_file_path) and os.path.exists(dataless_file_path):
+            print(f"Convirtiendo {miniseed_file_path} a SAC usando el archivo dataless SEED...")
+            cmd = f"rdseed -f {miniseed_file_path} -R -d -o 1 -p -g {dataless_file_path}"
             print(f"Ejecutando: {cmd}")
-            subprocess.run(cmd, shell=True)
+            result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            print(result.stdout.decode())
         else:
             print(f"""Ha habido un error al convertir {miniseed_file} a SAC. Faltan los metadatos StationXML o los datos miniSEED.""")
