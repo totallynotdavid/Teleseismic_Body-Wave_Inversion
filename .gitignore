@@ -1,4 +1,6 @@
 *.SAC
+RESP*
+*.err_log
 
 /paper/build/*
 !/paper/build/*.pdf
