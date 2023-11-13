@@ -13,6 +13,7 @@
 \hypersetup{urlcolor=blue, colorlinks=true} % Colors hyperlinks in blue
 
 \linespread{1.1} % Interlineado
+\setlength\parindent{0pt} % no indentado
 \usepackage{geometry} % Control de margenes
 \geometry{
 	left=25mm,
@@ -45,64 +46,58 @@
 \vspace{10pt}
 
 
-\section{Responsabilidad de Ejecución} \noindent 
+\section{Responsabilidad de Ejecución}
 Tesista: David Duran \\
 Asesor: Cesar Jimenez  \\
 
 
-\section{Título del Trabajo:} \noindent 
+\section{Título del Trabajo:}
 Aspectos físicos de la fuente del terremoto de Yauca-Arequipa de 2013 (7.1 Mw) 
 
-\section{Resumen } \noindent 
+\section{Resumen }
 En este trabajo se calculan las ecuaciones ...
 
 \section{Contenido} 
 
 \subsection{Introducción} 
 
+\subsection*{Estructura geológica del Perú}
+
+La interacción entre la placa oceánica de Nazca y la continental sudamericana define la estructura geológica del sur de Perú. La subducción de la placa oceánica de Nazca, con un grosor promedio de 6.4 km\footnote{\textbf{Nota}: Este promedio es para el área de estudio del artículo de Krabbenhöft et al (2004)} \cite{Krabbenhoft2004}, bajo la placa sudamericana a lo largo de la Fosa de Perú-Chile\cite{Krabbenhoft2004} es continua, a una velocidad de aproximadamente 63 mm/año\cite{VillegasLanza2016}.
+
+Velocidades sísmicas de la corteza continental surperuana varían de 4.5 a 6.5 km/s según los modelos de Krabbenhöft et al. (2004) hasta 25 km de profundidad, reflejando un cambio en el gradiente de velocidad del basamento cristalino asociado al proceso de subducción \cite{Krabbenhoft2004}. La deformación cortical resulta en la elevación de la Cordillera Occidental y la altiplanicie, estructuras que son producto de procesos tectónicos milenarios \cite{VillegasLanza2016}.
+
 \subsection*{Antecedentes de trabajos previos}
-\noindent En la región de Yauca, varios terremotos históricos han tenido un impacto significativo en las localidades cercanas. Uno notable ocurrió el 6 de agosto de 1913, afectando a ciudades como Chala, Atico, y Ocoña, entre otras. Este evento fue seguido por un maremoto que inundó partes de la costa. Más recientemente, el 25 de septiembre de 2015, un sismo de magnitud 7.0 Mw sacudió la región, con su epicentro reportado cerca de la ciudad de Yauca.
+En la región de Yauca, varios terremotos históricos han tenido un impacto significativo en las localidades cercanas. Uno notable ocurrió el 6 de agosto de 1913, afectando a ciudades como Chala, Atico, y Ocoña, entre otras. Este evento fue seguido por un maremoto que inundó partes de la costa. Más recientemente, el 25 de septiembre de 2015, un sismo de magnitud 7.0 Mw sacudió la región, con su epicentro reportado cerca de la ciudad de Yauca.
 
 \subsection*{Planteamiento del problema}
-\noindent El terremoto de Yauca-Arequipa de 2018 presenta un proceso de ruptura complejo que requiere un análisis detallado para entender las características físicas de la fuente sísmica y cómo contribuyeron a la generación de un tsunami local. La comprensión de estos aspectos puede ayudar a preparar mejor a las comunidades locales para futuros eventos sísmicos y tsunamis.
+El terremoto de Yauca-Arequipa de 2018 presenta un proceso de ruptura complejo que requiere un análisis detallado para entender las características físicas de la fuente sísmica y cómo contribuyeron a la generación de un tsunami local. \cite{CEN13}
 
 \subsection*{Planteamiento de la hipótesis}
-\noindent Mediante la inversión de las formas de onda telesísmicas y la simulación numérica del tsunami, se puede obtener una comprensión detallada de las características de la fuente sísmica y el proceso de ruptura del terremoto, así como la correlación con la generación del tsunami local.
+Mediante la inversión de las formas de onda telesísmicas y la simulación numérica del tsunami, se puede obtener una comprensión detallada de las características de la fuente sísmica y el proceso de ruptura del terremoto, así como la correlación con la generación del tsunami local.
 
 \subsection*{Objetivos} 
-\noindent El objetivo principal es analizar las características físicas de la fuente sísmica del terremoto de Yauca-Arequipa de 2018 y entender cómo contribuyeron al tsunami local generado. Además, se busca comparar estos hallazgos con los eventos sísmicos históricos en la región para proporcionar una mejor comprensión de la actividad sísmica en esta área.
+El objetivo principal es analizar las características físicas de la fuente sísmica del terremoto de Yauca-Arequipa de 2018 y entender cómo contribuyeron al tsunami local generado. Además, se busca comparar estos hallazgos con los eventos sísmicos históricos en la región para proporcionar una mejor comprensión de la actividad sísmica en esta área.
 
 \subsection{Fundamentación Teórica} 
-\noindent La inversión de formas de onda telesísmicas es una técnica crucial utilizada para analizar el proceso de ruptura de terremotos. Esta técnica permite deducir información sobre el mecanismo focal, que está relacionado con la orientación del plano de ruptura y es coherente con el patrón sismotectónico de la región sur del Perú. A través de la simulación numérica del tsunami podemos entender cómo las características de la fuente sísmica contribuyen a la generación y propagación del tsunami.
+La inversión de formas de onda telesísmicas es una técnica crucial utilizada para analizar el proceso de ruptura de terremotos. Esta técnica permite deducir información sobre el mecanismo focal, que está relacionado con la orientación del plano de ruptura y es coherente con el patrón sismotectónico de la región sur del Perú. A través de la simulación numérica del tsunami podemos entender cómo las características de la fuente sísmica contribuyen a la generación y propagación del tsunami.
 
 \subsection{Metodología} 
-\noindent Utilizando el método de inversión de formas de onda telesísmicas de Kikuchi y Kanamori, se analizarán las señales sísmicas de estaciones de la red IRIS. Posteriormente, se utilizará el modelo numérico TUNAMI-N2 para simular el tsunami local, comparando los mareogramas observados y simulados para validar el modelo y entender la correlación entre la fuente sísmica y la generación del tsunami.
+Utilizando el método de inversión de formas de onda telesísmicas de Kikuchi y Kanamori \cite{Kik2003}, se analizarán las señales sísmicas de estaciones de la red IRIS.
 
-\subsection{Cronograma} 
+\subsection{Cronograma}
 ...
 
-\section{Nivel del Trabajo de Investigación:} \noindent 
-Trabajo de Tesis para obtener el Título Profesional en Física.  \\
+\section{Nivel del Trabajo de Investigación:}
+Trabajo de Tesis para obtener el Título Profesional en Física.
 
-\begin{thebibliography}{99}
+\bibliographystyle{plain}
+\bibliography{refs}
 
-\bibitem[Kik03]{Kik2003} Kikuchi, M. and Kanamori, H. (2003) Notes on Teleseismic Body-Wave Inversion Program, web:
-\url{http://www.eri.u-tokyo.ac.jp/ETAL/KIKUCHI/}
-
-\bibitem[CEN13]{CEN13} CENEPRED. (2013). Sismo de Yauca-Acarí del 25 de Septiembre del 2013 (7.0 Mw) - Arequipa. Recuperado de \url{https://sigrid.cenepred.gob.pe/sigridv3/storage/biblioteca/3955_sismo-de-yauca-acari-del-25-de-septiembre-del-2013-70mw-arequipa.pdf}
-
-\bibitem[DHN]{DHN} Jiménez C. (2018) Sismo y Tsunami de Yauca 2018 (7.1 Mw). Recuperado de \url{https://www.dhn.mil.pe/files/cnat/pdf/articulos/Sismo%20y%20Tsunami%20Yauca%202018.pdf}
-
-\bibitem[IGP13]{IGP13} Instituto Geofísico del Perú. (2013). Sismo de Yauca-Acarí del 25 de septiembre del 2013 (7.0 Mw) - Arequipa. Recuperado de \url{http://hdl.handle.net/20.500.12816/1104}
-
-\bibitem[TU]{TU} Tohoku University. (2010). Numerical Simulation as Guidance in Making Tsunami Hazard Map for Sabah and Labuan Island. Recuperado de \url{https://iisee.kenken.go.jp/syndb/?action=abstr&id=MEE09199&est=T&year=2010}
-
-\end{thebibliography}
- 
 \centerline{\rule{100mm}{0.2mm}}
 
 \vspace{40pt}
-\hspace{280pt} Lima, 20 de julio de 2021
+\hspace{280pt} Lima, \today
 
 \vspace{100pt}
 \centerline{............................................. \hspace{100pt}  .............................................}
