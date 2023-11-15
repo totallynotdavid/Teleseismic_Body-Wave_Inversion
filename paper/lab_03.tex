@@ -27,12 +27,12 @@
 
 \title{Lab. 03: Pre-procesamiento de señales sísmicas}
 \author{David Duran (\url{davidamos.duran@unmsm.edu.pe})\\\url{https://totallynotdavid.github.io/}}
-\date{\url{https://github.com/totallynotdavid/Teleseismic_Body-Wave_Inversion/}\\6 de noviembre, 2023}
+\date{\url{https://github.com/totallynotdavid/Teleseismic_Body-Wave_Inversion/}\\Versión 1.0 - 14 de noviembre, 2023}
 \begin{document}
 \maketitle
 
 \begin{abstract}
-    Este laboratorio está diseñado para estudiantes e investigadores interesados en el análisis de datos de ondas de cuerpo telesísmicas. Proporciona instrucciones detalladas sobre cómo utilizar un script de Python para automatizar la descarga, conversión y preparación de datos sísmicos. Utilizando el script, los usuarios pueden adquirir datos sísmicos en formato miniSEED y los metadatos correspondientes en formato XML. Posteriormente, se realiza la conversión a formatos SEED \footnote{SEED = Standard for Exchange of Earthquake Data} sin datos (dataless SEED) y a SAC mediante el uso de la herramienta `rdseed` \cite{rdseed}, la cual es esencial para el análisis subsecuente utilizando el modelo de Kikuchi y Kanamori \cite{kikuchi_kanamori_model}. Este proceso automatizado no solo mejora la eficiencia en el procesamiento de datos, sino que también asegura una mayor confiabilidad y estandarización en la manipulación de los mismos.
+    Este laboratorio ofrece un método automatizado para descargar, convertir y preparar datos sísmicos, enfocándose en ondas de cuerpo telesísmicas. Detalla el uso de un script en Python para obtener datos en formato miniSEED y metadatos en XML, y su conversión a formatos SEED (dataless SEED) y SAC mediante la herramienta rdseed. El objetivo es optimizar la eficiencia y estandarizar la gestión de datos sísmicos.
 \end{abstract}
 
 \tableofcontents
@@ -82,45 +82,69 @@
 
 \end{tikzpicture}
 
+\section{Introducción}
+
+Este documento sirve como una guía detallada para la automatización en la adquisición y procesamiento de datos sísmicos, con aplicaciones específicas en el modelo de Kikuchi y Kanamori. 
+Aborda cómo este proyecto mejora la recolección y preparación de datos geofísicos y su importancia en el contexto más amplio de la investigación sísmica. 
+Este trabajo es parte del proyecto de tesis ``Aspectos físicos de la fuente del terremoto de Yauca-Arequipa de 2013 (7.1 Mw)'' por David Duran, supervisado por el Dr. Cesar Jimenez. 
+Se incluyen ejemplos prácticos y enlaces a recursos adicionales para comprender mejor las herramientas utilizadas.
+
 \section{Instalar dependencias}
 
-Para realizar el análisis sísmico con el modelo de Kikuchi y Kanamori, es necesario instalar una serie de dependencias. A continuación, se presenta un resumen de los pasos que debes seguir para la instalación de estas herramientas esenciales.
+\subsection{Prerrequisitos}
+
+Antes de comenzar la instalación, asegúrate de que tu sistema cumpla con los siguientes prerrequisitos:
+
+\begin{itemize}
+  \item Sistema operativo: Ubuntu 20.04 LTS o superior.
+  \item Memoria: Al menos 4 GB de RAM.
+  \item Espacio en disco: 10 GB de espacio libre.
+  \item Conexión a Internet para descargar las dependencias.
+\end{itemize}
 
 \subsection{Herramientas necesarias}
 
-Asegúrate de tener instaladas las siguientes herramientas:
+\begin{leftbar}
+  El proceso de instalación de las siguientes herramientas puede variar según el sistema operativo. Para usuarios de Ubuntu (GNU Linux), hemos facilitado este proceso con el script \texttt{dependencies.sh}. Encuentra detalles adicionales en el archivo \texttt{README.md} en nuestro repositorio de GitHub. Para problemas durante la instalación, consulta las secciones de 'Preguntas frecuentes' o 'Solución de problemas' en los sitios web de las herramientas.
+\end{leftbar}
+
+La instalación de herramientas esenciales es el primer paso para asegurar un flujo de trabajo eficiente en el análisis sísmico. Por esto, es necesario instalar una serie de dependencias:
 
 \begin{itemize}
-\item \textbf{rdseed}: Conversión de datos sísmicos a diversos formatos. Disponible para descarga en \url{http://www.iris.edu/pub/programs/rdseedv5.3.1.tar.gz}.
-\item \textbf{Seismic Analysis Code} (SAC): Necesario para analizar y procesar datos sísmicos. El formulario de solicitud está disponible en \url{http://ds.iris.edu/ds/nodes/dmc/forms/sac/}.
-\item \textbf{Java}: Requerido para ejecutar aplicaciones como el convertidor de StationXML a SEED. En Ubuntu puede instalarse con: \texttt{sudo apt install default-jre}
-\item \textbf{Perl}: Usado para ejecutar scripts que manipulan archivos de datos sísmicos. En Ubuntu puede instalarse con: \texttt{sudo apt install perl}
-\end{itemize}
+  \item \textbf{rdseed}: Es utilizado para leer e interpretar archivos en formato SEED, el estándar de la Federación de Redes Sismográficas Digitales (FDSN, por sus siglas en inglés) para datos sísmicos. En nuestro proyecto, rdseed es utilizado para convertir datos descargados en formato miniSEED a SAC. En 2018 dejó de recibir soporte, sin embargo puedes descargar rdseed desde: \url{http://www.iris.edu/pub/programs/rdseedv5.3.1.tar.gz} o compilarlo desde el código fuente en: \url{https://github.com/iris-edu-legacy/rdseed}.
 
-\begin{leftbar}
-  El proceso de instalación de estas herramientas puede variar dependiendo del sistema operativo que estés utilizando. Este proceso ha sido automatizado para Ubuntu (GNU Linux) en el archivo bash \texttt{dependencies.sh}. Para más información, consulta el archivo \texttt{README.md} en el repositorio de GitHub.
-\end{leftbar}
+  \item \textbf{stationxml-seed-converter}: Es utilizado para convertir metadatos sísmicos entre los formatos dataless SEED y FDSN-StationXML. En nuestro proyecto, usamos esta herramienta para transformar metadatos descargados en formato XML a dataless SEED, lo que permite su posterior procesamiento con rdseed. Esta herramienta es un programa de línea de comandos escrito en Java, por lo que es importante tener Java instalado en el sistema. Descarga el conversor desde: \url{https://github.com/iris-edu/stationxml-seed-converter}.
+
+  \item \textbf{Java}: Importante para ejecutar el `stationxml-seed-converter`. En sistemas basados en Ubuntu, instala Java con el comando: \texttt{sudo apt install default-jre}.
+
+  \item \textbf{Seismic Analysis Code (SAC)}: Este software se utiliza para el análisis detallado de eventos sísmicos. En nuestro proyecto, SAC es importante para operaciones posteriores de análisis y procesamiento de los datos sísmicos convertidos por rdseed. SAC no está disponible públicamente, pero puedes solicitarlo en: \url{http://ds.iris.edu/ds/nodes/dmc/forms/sac/}.
+
+  \item \textbf{Perl}: Un lenguaje de programación utilizado para ejecutar scripts que manejan archivos de datos sísmicos. Aunque no se usa directamente en nuestro script principal, Perl es útil para tareas de automatización y procesamiento de datos relacionados, como los proporcionados por algunas herramientas de rdseed y SAC. Instala Perl en Ubuntu con: \texttt{sudo apt install perl}.
+\end{itemize}
 
 \subsubsection{Pasos para la instalación}
 
-Sigue estos pasos para configurar tu entorno de trabajo:
+Sigue estos pasos para preparar tu entorno de trabajo:
 
 \begin{enumerate}
-  \item Descarga o clona el repositorio que contiene todas las dependencias y scripts necesarios desde \url{https://github.com/totallynotdavid/Teleseismic_Body-Wave_Inversion/}.
+  \item Clona el repositorio con las dependencias y scripts:
   \begin{verbatim}
   git clone https://github.com/totallynotdavid/Teleseismic_Body-Wave_Inversion/
   \end{verbatim}
-  \item Asegúrate de estar en la carpeta raíz del repositorio:
+
+  \item Navega al directorio del repositorio:
   \begin{verbatim}
   cd Teleseismic_Body-Wave_Inversion
   \end{verbatim}
-  \item Otorga permisos de ejecución al script \texttt{dependencies.sh}:
+
+  \item Asigna permisos de ejecución al script \texttt{dependencies.sh}:
   \begin{verbatim}
-  chmod +x /scripts/bash/dependencies.sh
+  chmod +x ./scripts/bash/dependencies.sh
   \end{verbatim}
-  \item Ejecuta el script para instalar todas las dependencias necesarias:
+
+  \item Ejecuta \texttt{dependencies.sh} para instalar las dependencias. Consulta \texttt{INSTALL.md} en caso de errores:
   \begin{verbatim}
-  chmod /scripts/bash/dependencies.sh
+  ./scripts/bash/dependencies.sh
   \end{verbatim}
 \end{enumerate}
 
@@ -164,6 +188,15 @@ Con estos pasos, tendrás los datos listos para ser utilizados en el pipeline de
 
 El proceso de procesamiento de señales sísmicas se apoya en una serie de scripts diseñados para automatizar las tareas que van desde la adquisición de los datos hasta su preparación definitiva para el análisis correspondiente con el modelo. A continuación, se delinean los componentes técnicos fundamentales de la fase inicial del flujo de trabajo, establecido por el autor. Esta fase se maneja de forma independiente al modelo de Kikuchi y Kanamori.
 
+De forma general, el script hace lo siguiente:
+
+\begin{enumerate}
+  \item Define las estaciones sísmicas y los rangos de tiempo de interés.
+  \item Realiza solicitudes HTTP para descargar datos sísmicos en formato miniSEED y metadatos en formato XML utilizando las APIs brindadas por IRIS.
+  \item Convierte los metadatos XML a formato dataless SEED utilizando herramientas Java.
+  \item Prepara los archivos miniSEED para su procesamiento posterior.
+\end{enumerate}
+
 \subsection{Descarga de datos}
 
 Para la automatización de los requests con la base de datos de SAGE (\textit{Seismological Facility for the Advancement of Geoscience}), se ha desarrollado el script \texttt{fetch\_and\_process.py}. Este script está concebido para facilitar la recolección eficiente de los datos sísmicos junto con sus respectivos metadatos. Es necesario, claro está, definir las estaciones apropiadas y los rangos de tiempo apropiados para el investigador.
@@ -185,7 +218,7 @@ Antes de proceder con la conversión de miniSEED a SAC, el script realiza una ve
 
 Para la conversión de miniSEED a SAC, se emplea el programa \texttt{rdseed}. Es una herramienta que permite la extracción de datos de archivos SEED (incluyendo miniSEED y dataless SEED) y su conversión a otros formatos, en este caso, al formato SAC utilizado ampliamente en el análisis sísmico.
 
-\subsection{Scripts Perl para Procesamiento Final}
+\subsection{Scripts Perl para procesamiento final}
 
 \texttt{mk\_conv.farm.pl} (brindado por Kikuchi y Kanamori en el manual de su modelo) es utilizado en la etapa final del pre-procesamiento para automatizar el procesamiento de grandes conjuntos de datos. Este script generará dos archivos: \texttt{response} y \texttt{i\_conv.farm}.
 
