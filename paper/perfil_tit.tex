@@ -5,7 +5,12 @@
 \usepackage{booktabs}
 \usepackage{dcolumn}
 \usepackage{bm}
+\usepackage{amsmath}
 \usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{xcolor,tikz}
+\usepackage{pgfgantt}
+
 \RequirePackage{graphicx}
 \RequirePackage[absolute]{textpos}
 
@@ -68,7 +73,12 @@ La interacción entre la placa oceánica de Nazca y la continental sudamericana 
 Velocidades sísmicas de la corteza continental surperuana varían de 4.5 a 6.5 km/s según los modelos de Krabbenhöft et al. (2004) hasta 25 km de profundidad, reflejando un cambio en el gradiente de velocidad del basamento cristalino asociado al proceso de subducción \cite{Krabbenhoft2004}. La deformación cortical resulta en la elevación de la Cordillera Occidental y la altiplanicie, estructuras que son producto de procesos tectónicos milenarios \cite{VillegasLanza2016}.
 
 \subsection*{Antecedentes de trabajos previos}
-En la región de Yauca, varios terremotos históricos han tenido un impacto significativo en las localidades cercanas. Uno notable ocurrió el 6 de agosto de 1913, afectando a ciudades como Chala, Atico, y Ocoña, entre otras. Este evento fue seguido por un maremoto que inundó partes de la costa. Más recientemente, el 25 de septiembre de 2015, un sismo de magnitud 7.0 Mw sacudió la región, con su epicentro reportado cerca de la ciudad de Yauca.
+
+Arequipa, conocida por su actividad sísmica, provee un contexto esencial para comprender el terremoto de Yauca en 2013. Este análisis se basa en la detallada investigación de Silgado (1978). Desde tiempos antiguos, Arequipa ha sido escenario de terremotos significativos. 
+
+Por ejemplo, en la época de Túpac Yupanqui, un gran terremoto, posiblemente relacionado con la erupción del volcán Misti, arrasó los primeros asentamientos. En 1555, ya bajo el dominio español, los registros indican que los temblores eran frecuentes y destructivos. Avanzando en el tiempo, el terremoto de 1604, que generó un tsunami, causó estragos desde Arica hasta Ica, afectando gravemente localidades como el puerto de Ilo y la Villa de Camaná. En 1784, otro terremoto, esta vez de una magnitud estimada en 8.0, duró cerca de cinco minutos y cobró la vida de 154 personas, dejando un patrón claro de destrucción. 
+
+El siglo XX también fue testigo de terremotos devastadores. Uno notable ocurrió el 6 de agosto de 1913, afectando a ciudades como Chala, Atico, y Ocoña, entre otras; este evento fue seguido por un maremoto que inundó partes de la costa. En 1958, un sismo de magnitud 7.3 resultó en 28 muertes y daños significativos en estructuras antiguas. En 1960, un terremoto y sus réplicas causaron aún más daño y pérdidas humanas en Arequipa. Más recientemente, el 25 de septiembre de 2015, un sismo de magnitud 7.0 Mw sacudió la región, con su epicentro reportado cerca de la ciudad de Yauca.
 
 \subsection*{Planteamiento del problema}
 El terremoto de Yauca-Arequipa de 2018 presenta un proceso de ruptura complejo que requiere un análisis detallado para entender las características físicas de la fuente sísmica y cómo contribuyeron a la generación de un tsunami local. \cite{CEN13}
@@ -77,16 +87,89 @@ El terremoto de Yauca-Arequipa de 2018 presenta un proceso de ruptura complejo q
 Mediante la inversión de las formas de onda telesísmicas y la simulación numérica del tsunami, se puede obtener una comprensión detallada de las características de la fuente sísmica y el proceso de ruptura del terremoto, así como la correlación con la generación del tsunami local.
 
 \subsection*{Objetivos} 
-El objetivo principal es analizar las características físicas de la fuente sísmica del terremoto de Yauca-Arequipa de 2018 y entender cómo contribuyeron al tsunami local generado. Además, se busca comparar estos hallazgos con los eventos sísmicos históricos en la región para proporcionar una mejor comprensión de la actividad sísmica en esta área.
+
+Principales:
+
+\begin{enumerate}
+  \item Analizar las características físicas de la fuente sísmica del terremoto de Yauca-Arequipa de 2018 y entender cómo contribuyeron al tsunami local generado.
+\end{enumerate}
+
+Secundarios:
+
+\begin{enumerate}
+  \item Automatizar el proceso de inversión de formas de onda telesísmicas.
+  \item Comparar estos hallazgos con los eventos sísmicos históricos en la región para proporcionar una mejor comprensión de la actividad sísmica en esta área.
+\end{enumerate}
 
 \subsection{Fundamentación Teórica} 
 La inversión de formas de onda telesísmicas es una técnica crucial utilizada para analizar el proceso de ruptura de terremotos. Esta técnica permite deducir información sobre el mecanismo focal, que está relacionado con la orientación del plano de ruptura y es coherente con el patrón sismotectónico de la región sur del Perú. A través de la simulación numérica del tsunami podemos entender cómo las características de la fuente sísmica contribuyen a la generación y propagación del tsunami.
 
 \subsection{Metodología} 
-Utilizando el método de inversión de formas de onda telesísmicas de Kikuchi y Kanamori \cite{Kik2003}, se analizarán las señales sísmicas de estaciones de la red IRIS.
+Utilizando el método de inversión de formas de onda telesísmicas de Kikuchi y Kanamori \cite{Kik2003}, se analizarán las señales sísmicas de estaciones de la red IRIS. Este método se basa en la deconvolución iterativa de sismogramas para analizar el proceso de ruptura de los terremotos. El método inicia con la modelación de un terremoto como una secuencia de subeventos, cada uno caracterizado por su propio tensor de momento sísmico \( M_{ij} \), descompuesto en componentes esféricas y deviatorias:
+
+\begin{align}
+  \frac{1}{3} \text{Tr}[M] & = \frac{M_{11} + M_{22} + M_{33}}{3}\\
+  M_{ij} &= M_0(n_i d_j + n_j d_i)
+\end{align}
+
+donde \( \vec{n} \) es el vector normal al plano de falla y \( \vec{d} \) es el vector de deslizamiento.
+
+El tensor de momento sísmico se representa mediante una combinación lineal de seis tensores elementales, que forman la base para representar la fuente sísmica.
+
+La deconvolución se realiza ajustando los sismogramas observados \( x_j(t) \) a los sismogramas sintéticos mediante la minimización del error \( \Delta \):
+
+\begin{align}
+    \Delta = \sum_{j=1}^{N_s} \int \left[ x_j(t) - \sum_{n=1}^{N_b} a_n \omega_{jn}(t; p) \right]^2 dt
+\end{align}
+
+Los coeficientes \( a_n \) y los parámetros \( p \) se determinan minimizando \( \Delta \). Las ecuaciones normales para la solución son:
+
+\begin{align}
+    a_n = \sum_{m=1}^{N_b} R_{nm}^{-1} G_m
+\end{align}
+
+El modelo se evalúa a través de la correlación \( \psi_M(p) \) entre las formas de onda observadas y sintéticas:
+
+\begin{align}
+    \psi_M(p) = \frac{\sum_{n} G_{n} a_{n}^{0}}{R_{x}}
+\end{align}
 
 \subsection{Cronograma}
-...
+
+El cronograma del proyecto de tesis se muestra en la Tabla. 
+
+\begin{ganttchart}[
+  hgrid,
+  vgrid,
+  time slot format=isodate-yearmonth,
+  time slot unit=month,
+  x unit=0.8cm, % Adjust the width of each time unit
+  title/.append style={fill=blue!20},
+  title label font=\scriptsize\bfseries,
+  bar/.append style={fill=blue!50},
+  bar label font=\normalsize,
+  group right shift=0,
+  group top shift=.6,
+  group height=.3,
+]{2023-01}{2024-01}
+
+\gantttitlecalendar{year, month=shortname} \\
+
+\ganttgroup{Objetivo Principal}{2023-01}{2023-08} \\
+\ganttbar{Revisión de la literatura}{2023-01}{2023-02} \\
+\ganttbar{Recolección y preparación de datos}{2023-03}{2023-04} \\
+\ganttbar{Implementación del modelo}{2023-05}{2023-06} \\
+\ganttbar{Análisis de datos}{2023-07}{2023-08} \\
+
+\ganttgroup{Objetivos secundarios}{2023-03}{2023-10} \\
+\ganttbar{Automatización de inversión}{2023-03}{2023-05} \\
+\ganttbar{Comparación con eventos históricos}{2023-06}{2023-10} \\
+
+\ganttgroup{Redacción y publicación}{2023-09}{2023-12} \\
+\ganttbar{Redacción de la tesis}{2023-09}{2023-10} \\
+\ganttbar{Preparación de publicación}{2023-11}{2023-12} \\
+
+\end{ganttchart}
 
 \section{Nivel del Trabajo de Investigación:}
 Trabajo de Tesis para obtener el Título Profesional en Física.
