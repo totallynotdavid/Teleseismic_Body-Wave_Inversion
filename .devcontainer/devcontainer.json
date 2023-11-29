@@ -39,7 +39,8 @@
 				"zccajgb.doi-adder",
 				"GitHub.copilot",
 				"GitHub.copilot-chat",
-				"James-Yu.latex-workshop"
+				"James-Yu.latex-workshop",
+				"ms-azuretools.vscode-docker"
 			]
         }
     },
