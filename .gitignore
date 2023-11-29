@@ -9,3 +9,4 @@ data/preprocesamiento/*
 
 **/__pycache__/*
 *.log
+scripts/python/poetry.lock
