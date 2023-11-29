@@ -34,7 +34,12 @@
 				"stkb.rewrap",
 				"vivaxy.vscode-conventional-commits",
 				"analytic-signal.preview-pdf",
-				"CoderCoder.codercoder-dark-theme"
+				"CoderCoder.codercoder-dark-theme",
+				"oderwat.indent-rainbow",
+				"zccajgb.doi-adder",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"James-Yu.latex-workshop"
 			]
         }
     },
