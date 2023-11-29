@@ -3,7 +3,7 @@ import subprocess
 import requests
 import re
 import logging
-from config import BASE_DIR, STATION_URL, DATASELECT_URL, STATIONXML_PATH
+from config import BASE_DIR, STATION_URL, DATASELECT_URL, STATIONXML_PATH, CHANNELS
 
 def verificar_directorio():
     """
@@ -78,7 +78,7 @@ def procesar_estacion(network, station, inicio, fin):
             metadata_downloaded = False
 
     # Descargar datos miniSEED
-    for channel in ["BHE", "BHN", "BHZ"]:  # Canales específicos
+    for channel in CHANNELS:
         archivo_miniseed_canal = archivo_miniseed.replace(".mseed", f"_{channel}.mseed")
         ruta_miniseed_canal = os.path.join(BASE_DIR, archivo_miniseed_canal)
 
@@ -93,6 +93,6 @@ def procesar_estacion(network, station, inicio, fin):
             miniseed_downloaded = True
 
     if metadata_downloaded and miniseed_downloaded:
-        for channel in ["BHE", "BHN", "BHZ"]:
+        for channel in CHANNELS:
             ruta_miniseed_canal = os.path.join(BASE_DIR, archivo_miniseed.replace(".mseed", f"_{channel}.mseed"))
             convertir_formato(f"rdseed -f {ruta_miniseed_canal} -R -d -o 1 -p -g {ruta_dataless} -q {BASE_DIR}")
