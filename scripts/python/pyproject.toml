@@ -12,9 +12,12 @@ requests = "^2.31.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.1.6"
+poethepoet = "^0.24.4"
 
-[tool.poetry.scripts]
-check-lint = "ruff:run"
+[tool.poe.tasks]
+check-lint = "ruff check ."
+fix-lint = "ruff check . --fix"
+format = "ruff format ."
 
 [tool.ruff.lint]
 select = [
