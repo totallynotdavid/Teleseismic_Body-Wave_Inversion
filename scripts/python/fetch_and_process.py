@@ -6,7 +6,16 @@ import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Configuración del registro de eventos (logging)
-logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s:%(message)s')
+# Esto es para que los mensajes de registro se muestren en la consola y se guarden en un archivo de registro. Especiamente útil para depurar procesos largos.
+log_file = 'fetch_and_process.log'
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s:%(message)s',
+    handlers=[
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+    ]
+)
 
 # Definición de directorios y endpoints
 BASE_DIR = "data/preprocesamiento"
@@ -14,33 +23,48 @@ STATIONXML_PATH = os.path.join(os.getcwd(), "dependencies/stationxml-seed-conver
 STATION_URL = "http://service.iris.edu/fdsnws/station/1/query"
 DATASELECT_URL = "http://service.iris.edu/fdsnws/dataselect/1/query"
 
-# Estaciones y redes a descargar
-ESTACIONES = [
-    ("II", "ASCN"),  # Butt Crater, Ascension Island
-    ("IU", "CCM"),  # Cathedral Cave, Missouri, USA
-    ("IU", "COL"),  # College Outpost, Alaska, USA
-    ("IU", "COR"),  # Corvallis, Oregon, USA
-    # ("CN", "FFC"),  # Flin Flon, Canada (no hay datos)
-    ("IU", "HKT"),  # Hockley, Texas
-    ("IU", "HRV"),  # Adam Dziewonski Observatory, Massachusetts, USA
-    ("G",  "KOG"),  # Kourou, French Guiana, France
-    ("IU", "PAB"),  # San Pablo, Spain
-    ("CI", "PFO"),  # Pinon Flat, California, USA
-    ("II", "RPN"),  # Rapanui, Easter Island, Chile
-    ("IU", "SPA"),  # South Pole, Antarctica
-    ("G",  "TAM"),  # Tamanrasset, Algeria
-    ("IU", "TUC"),  # Tucson, Arizona
-    ("G",  "UNM")   # Unam, Mexico, Mexico
-]
+# Información sobre el evento sísmico definida por el usuario
+EVENT_LATITUDE = -9.68
+EVENT_LONGITUDE = -80.08
+EVENT_START_TIME = "1996-02-21T12:46:01"
+EVENT_END_TIME = "1996-02-21T13:51:01"
+MIN_RADIUS = 30  # en grados
+MAX_RADIUS = 90  # en grados
+NETWORK_PREFERENCE = "II,IU"
 
-# Información sobre el evento sísmico
-INFO_EVENTO = {
-    # Latitud y longitud no son relevantes
-    # "latitude": -9.6915,
-    # "longitude": -79.767,
-    "inicio": "1996-02-21T12:46:01",  # 5 minutos antes del evento
-    "fin": "1996-02-21T13:51:01"     # 60 minutos después del evento
-}
+def obtener_estaciones_dentro_del_rango(latitude, longitude, start_time, end_time, min_radius, max_radius, networks):
+    """
+    Obtener una lista de estaciones dentro de un rango epicentral especificado y redes.
+    """
+    params = {
+        "latitude": latitude,
+        "longitude": longitude,
+        "starttime": start_time,
+        "endtime": end_time,
+        "minradius": min_radius,
+        "maxradius": max_radius,
+        "network": networks,
+        "format": "text",
+        "level": "station"
+    }
+    response = requests.get(STATION_URL, params=params)
+    response.raise_for_status()
+    return response.text
+
+def obtener_estaciones_del_response(response_text):
+    """
+    Parsear la lista de estaciones del texto de respuesta, comenzando desde la segunda línea para saltar el encabezado.
+    """
+    lines = response_text.strip().split('\n')
+    stations = []
+    for line in lines[1:]:
+        parts = line.split('|')
+        if len(parts) > 3:
+            network, station = parts[0], parts[1]
+            stations.append((network, station))
+    
+    logging.info(f"Estaciones encontradas: {len(stations)}. Estaciones: {stations}")
+    return stations
 
 def verificar_directorio():
     """
@@ -50,7 +74,7 @@ def verificar_directorio():
 
 def sanitizar_nombre(nombre):
     """
-    Sanitizar el nombre del archivo reemplazando los caracteres no alfanuméricos, excepto 'T', con guiones bajos.
+    Sanitizar el nombre del archivo reemplazando los caracteres no alfanuméricos, excepto 'T', con guiones bajos. Hacemos esto porque esos caracteres no son válidos en los nombres de archivo.
     """
     nombre_saneado = re.sub(r'[^a-zA-Z0-9_T.]', '_', nombre)  # Preservar la 'T' entre fecha y hora
     nombre_saneado = nombre_saneado.replace('T', '_')  # Reemplazar la 'T' con un guión bajo
@@ -81,7 +105,7 @@ def convertir_formato(comando):
     logging.debug(f"Ejecutando comando: {comando}")
     try:
         resultado = subprocess.run(comando, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return resultado .returncode == 0
+        return resultado.returncode == 0
     except subprocess.CalledProcessError as e:
         logging.error(f"Error al ejecutar: {comando}")
         logging.error(e.output.decode())
@@ -100,6 +124,7 @@ def procesar_estacion(network, station, inicio, fin):
     metadata_downloaded = False
     miniseed_downloaded = False
 
+    # Descargar metadata de la estación
     if descargar_archivo(STATION_URL, {
             "network": network,
             "station": station,
@@ -113,28 +138,39 @@ def procesar_estacion(network, station, inicio, fin):
         if not convertir_formato(f"java -jar {STATIONXML_PATH} -i {ruta_metadata} -o {ruta_dataless}"):
             metadata_downloaded = False
 
-    if descargar_archivo(DATASELECT_URL, {
-            "network": network,
-            "station": station,
-            "starttime": inicio,
-            "endtime": fin,
-            "format": "mseed"
-        }, ruta_miniseed):
-        miniseed_downloaded = True
+    # Descargar datos miniSEED
+    for channel in ["BHE", "BHN", "BHZ"]:  # Canales específicos
+        archivo_miniseed_canal = archivo_miniseed.replace(".mseed", f"_{channel}.mseed")
+        ruta_miniseed_canal = os.path.join(BASE_DIR, archivo_miniseed_canal)
+
+        if descargar_archivo(DATASELECT_URL, {
+                "network": network,
+                "station": station,
+                "starttime": inicio,
+                "endtime": fin,
+                "format": "mseed",
+                "cha": channel
+            }, ruta_miniseed_canal):
+            miniseed_downloaded = True
 
     if metadata_downloaded and miniseed_downloaded:
-        convertir_formato(f"rdseed -f {ruta_miniseed} -R -d -o 1 -p -g {ruta_dataless} -q {BASE_DIR}")
+        for channel in ["BHE", "BHN", "BHZ"]:
+            ruta_miniseed_canal = os.path.join(BASE_DIR, archivo_miniseed.replace(".mseed", f"_{channel}.mseed"))
+            convertir_formato(f"rdseed -f {ruta_miniseed_canal} -R -d -o 1 -p -g {ruta_dataless} -q {BASE_DIR}")
 
 # Programa principal
 def main():
     logging.info("Inicio del proceso de descarga y conversión de datos en paralelo.")
     verificar_directorio()
 
-    inicio = INFO_EVENTO["inicio"]
-    fin = INFO_EVENTO["fin"]
+    # Obtener y parsear estaciones
+    stations_response = obtener_estaciones_dentro_del_rango(
+        EVENT_LATITUDE, EVENT_LONGITUDE, EVENT_START_TIME, EVENT_END_TIME, MIN_RADIUS, MAX_RADIUS, NETWORK_PREFERENCE
+    )
+    updated_stations = obtener_estaciones_del_response(stations_response)
 
     with ThreadPoolExecutor(max_workers=None) as ejecutor:
-        futuro_a_estacion = {ejecutor.submit(procesar_estacion, red, estacion, inicio, fin): (red, estacion) for red, estacion in ESTACIONES}
+        futuro_a_estacion = {ejecutor.submit(procesar_estacion, red, estacion, EVENT_START_TIME, EVENT_END_TIME): (red, estacion) for red, estacion in updated_stations}
 
         for futuro in as_completed(futuro_a_estacion):
             red, estacion = futuro_a_estacion[futuro]
