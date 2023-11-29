@@ -15,7 +15,8 @@ def eliminar_archivos_especificos(base_dir):
 
         # Patrones de archivos a eliminar
         file_patterns = [
-            "*.01.*", "*.10.*", "*.20.*", "*.30.*", "*.40.*", "*.50.*", "*.60.*",
+            "RESP*.01.*", "RESP*.10.*", "RESP*.20.*", "RESP*.30.*",
+            "RESP*.40.*", "RESP*.50.*", "RESP*.60.*",
             "*.mseed", "*.dataless", "*.xml"
         ]
 
