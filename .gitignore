@@ -8,3 +8,4 @@ RESP*
 data/preprocesamiento/*
 
 **/__pycache__/*
+*.log
