@@ -1,9 +1,10 @@
-import os
-import subprocess
-import requests
-import re
 import logging
-from config import BASE_DIR, STATION_URL, DATASELECT_URL, STATIONXML_PATH, CHANNELS
+import os
+import re
+import subprocess
+
+import requests
+from config import BASE_DIR, CHANNELS, DATASELECT_URL, STATION_URL, STATIONXML_PATH
 
 
 def verificar_directorio():
