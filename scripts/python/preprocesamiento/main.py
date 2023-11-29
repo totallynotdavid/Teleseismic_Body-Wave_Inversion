@@ -1,5 +1,7 @@
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from utils.cleaning import eliminar_archivos_especificos
+from config import BASE_DIR
 
 from config import (
     EVENT_LATITUDE,
@@ -58,3 +60,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    eliminar_archivos_especificos(BASE_DIR)
