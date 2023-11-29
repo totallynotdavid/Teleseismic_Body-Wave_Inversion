@@ -3,13 +3,13 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from config import EVENT_LATITUDE, EVENT_LONGITUDE, MIN_RADIUS, MAX_RADIUS, NETWORK_PREFERENCE, EVENT_TIME
 from data_fetching import obtener_estaciones_dentro_del_rango, obtener_estaciones_del_response
 from file_handling import verificar_directorio, procesar_estacion
-from utils.time import calculate_time_range
+from utils.time import calcular_rango_tiempo
 
 # Programa principal
 def main():
     verificar_directorio()
 
-    EVENT_START_TIME, EVENT_END_TIME = calculate_time_range(EVENT_TIME)
+    EVENT_START_TIME, EVENT_END_TIME = calcular_rango_tiempo(EVENT_TIME)
 
     # Obtener y parsear estaciones
     stations_response = obtener_estaciones_dentro_del_rango(

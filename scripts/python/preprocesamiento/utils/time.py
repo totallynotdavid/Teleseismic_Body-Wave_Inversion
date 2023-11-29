@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-def calculate_time_range(event_time_str, minutes_before=5, minutes_after=10):
+def calcular_rango_tiempo(event_time_str, minutes_before=5, minutes_after=10):
     """
     Calcular el rango de tiempo para el evento sísmico.
 
