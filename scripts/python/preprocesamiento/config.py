@@ -6,16 +6,15 @@ import logging
 log_file = os.path.join(os.getcwd(), "logs/fetch_and_process.log")
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s %(levelname)s:%(message)s',
-    handlers=[
-        logging.FileHandler(log_file),
-        logging.StreamHandler()
-    ]
+    format="%(asctime)s %(levelname)s:%(message)s",
+    handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
 )
 
 # Definición de directorios y endpoints
 BASE_DIR = "data/preprocesamiento"
-STATIONXML_PATH = os.path.join(os.getcwd(), "dependencies/stationxml-seed-converter-2.1.3.jar")
+STATIONXML_PATH = os.path.join(
+    os.getcwd(), "dependencies/stationxml-seed-converter-2.1.3.jar"
+)
 STATION_URL = "http://service.iris.edu/fdsnws/station/1/query"
 DATASELECT_URL = "http://service.iris.edu/fdsnws/dataselect/1/query"
 

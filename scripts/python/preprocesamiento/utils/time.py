@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+
 def calcular_rango_tiempo(event_time_str, minutes_before=5, minutes_after=10):
     """
     Calcular el rango de tiempo para el evento sísmico.
@@ -12,4 +13,6 @@ def calcular_rango_tiempo(event_time_str, minutes_before=5, minutes_after=10):
     event_time = datetime.strptime(event_time_str, "%Y-%m-%dT%H:%M:%S")
     start_time = event_time - timedelta(minutes=minutes_before)
     end_time = event_time + timedelta(minutes=minutes_after)
-    return start_time.strftime("%Y-%m-%dT%H:%M:%S"), end_time.strftime("%Y-%m-%dT%H:%M:%S")
+    return start_time.strftime("%Y-%m-%dT%H:%M:%S"), end_time.strftime(
+        "%Y-%m-%dT%H:%M:%S"
+    )
