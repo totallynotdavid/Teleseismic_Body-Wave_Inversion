@@ -52,5 +52,8 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 RUN echo "Limpieza terminada"
 
+# Instalar Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
 # Set the entry point
 CMD ["/bin/bash"]
