@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "señales sísmicas"
+name = "preprocesamiento"
 version = "0.1.0"
 description = ""
 authors = ["David <dadch1404@gmail.com>"]
@@ -12,6 +12,9 @@ requests = "^2.31.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.1.6"
+
+[tool.poetry.scripts]
+check-lint = "ruff:run"
 
 [tool.ruff.lint]
 select = [
