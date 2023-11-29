@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Configuración del registro de eventos (logging)
 # Esto es para que los mensajes de registro se muestren en la consola y se guarden en un archivo de registro. Especiamente útil para depurar procesos largos.
-log_file = 'fetch_and_process.log'
+log_file = os.path.join(os.getcwd(), "logs/fetch_and_process.log")
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s:%(message)s',
