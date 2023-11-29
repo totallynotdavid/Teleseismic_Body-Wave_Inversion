@@ -6,7 +6,6 @@ from file_handling import verificar_directorio, procesar_estacion
 
 # Programa principal
 def main():
-    logging.info("Inicio del proceso de descarga y conversión de datos en paralelo.")
     verificar_directorio()
 
     # Obtener y parsear estaciones
