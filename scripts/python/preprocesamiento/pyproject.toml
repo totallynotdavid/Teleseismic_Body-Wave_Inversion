@@ -14,8 +14,20 @@ requests = "^2.31.0"
 ruff = "^0.1.6"
 
 [tool.ruff.lint]
-select = ["E", "F"]
-ignore = ["F401"]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
 
 [build-system]
 requires = ["poetry-core"]
