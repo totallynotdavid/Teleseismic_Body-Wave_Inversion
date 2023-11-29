@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "señales sísmicas"
+version = "0.1.0"
+description = ""
+authors = ["David <dadch1404@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.31.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.1.6"
+
+[tool.ruff.lint]
+select = ["E", "F"]
+ignore = ["F401"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
