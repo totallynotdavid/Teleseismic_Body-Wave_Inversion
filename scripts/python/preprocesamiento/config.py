@@ -22,8 +22,9 @@ DATASELECT_URL = "http://service.iris.edu/fdsnws/dataselect/1/query"
 # Información sobre el evento sísmico definida (pendiente: por el usuario)
 EVENT_LATITUDE = -9.68
 EVENT_LONGITUDE = -80.08
-EVENT_START_TIME = "1996-02-21T12:46:01"
-EVENT_END_TIME = "1996-02-21T13:51:01"
+EVENT_TIME = "1996-02-21T12:51:01"
+# EVENT_START_TIME = "1996-02-21T12:46:01"
+# EVENT_END_TIME = "1996-02-21T13:51:01"
 MIN_RADIUS = 30  # en grados
 MAX_RADIUS = 90  # en grados
 NETWORK_PREFERENCE = "II,IU"
