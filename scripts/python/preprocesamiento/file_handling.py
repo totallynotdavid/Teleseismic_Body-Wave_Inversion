@@ -58,7 +58,7 @@ def procesar_estacion(network, station, inicio, fin):
 
     # Descargar datos en formato miniSEED
     archivo_miniseed = f"{network}_{station}.mseed"
-    ruta_miniseed = os.path.join(BASE_DIR, archivo_miniseed)
+    # ruta_miniseed = os.path.join(BASE_DIR, archivo_miniseed)
 
     metadata_downloaded = False
     miniseed_downloaded = False
