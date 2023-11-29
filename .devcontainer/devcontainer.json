@@ -28,12 +28,13 @@
             "extensions": [
 				"ms-python.python",
 				"ms-python.vscode-pylance",
-                "james-yu.latex-workshop",
-                "aaron-bond.better-comments",
-                "shardulm94.trailing-spaces",
-                "stkb.rewrap",
-                "vivaxy.vscode-conventional-commits",
-                "analytic-signal.preview-pdf"
+				"james-yu.latex-workshop",
+				"aaron-bond.better-comments",
+				"shardulm94.trailing-spaces",
+				"stkb.rewrap",
+				"vivaxy.vscode-conventional-commits",
+				"analytic-signal.preview-pdf",
+				"CoderCoder.codercoder-dark-theme"
 			]
         }
     },
