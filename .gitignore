@@ -10,6 +10,7 @@ RESP*
 *.fls
 *.out
 *.gz
+*.toc
 *.fdb_latexmk
 
 data/preprocesamiento/*
