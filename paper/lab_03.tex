@@ -25,9 +25,9 @@
 \renewcommand\abstractname{Resumen}
 \renewcommand{\contentsname}{Tabla de contenido}
 
-\title{Lab. 03: Pre-procesamiento de señales sísmicas}
+\title{Lab. 03: Preprocesamiento de señales sísmicas}
 \author{David Duran (\url{davidamos.duran@unmsm.edu.pe})\\\url{https://totallynotdavid.github.io/}}
-\date{\url{https://github.com/totallynotdavid/Teleseismic_Body-Wave_Inversion/}\\Versión 1.0 - 14 de noviembre, 2023}
+\date{\url{https://github.com/totallynotdavid/Teleseismic_Body-Wave_Inversion/}\\Versión 1.0 – 14 de noviembre, 2023}
 \begin{document}
 \maketitle
 
@@ -84,9 +84,9 @@
 
 \section{Introducción}
 
-Este documento sirve como una guía detallada para la automatización en la adquisición y procesamiento de datos sísmicos, con aplicaciones específicas en el modelo de Kikuchi y Kanamori. 
+Este documento sirve como una guía detallada para la automatización en la adquisición y procesamiento de datos sísmicos, con aplicaciones específicas en el modelo de Kikuchi y Kanamori.
 Aborda cómo este proyecto mejora la recolección y preparación de datos geofísicos y su importancia en el contexto más amplio de la investigación sísmica. 
-Este trabajo es parte del proyecto de tesis ``Aspectos físicos de la fuente del terremoto de Yauca-Arequipa de 2013 (7.1 Mw)'' por David Duran, supervisado por el Dr. Cesar Jimenez. 
+Este trabajo es parte del proyecto de tesis ``Aspectos físicos de la fuente del terremoto de Yauca-Arequipa de 2013 (7.1 Mw)'' por David Duran, supervisado por el Dr.\ Cesar Jimenez.
 Se incluyen ejemplos prácticos y enlaces a recursos adicionales para comprender mejor las herramientas utilizadas.
 
 \section{Instalar dependencias}
@@ -97,7 +97,7 @@ Antes de comenzar la instalación, asegúrate de que tu sistema cumpla con los s
 
 \begin{itemize}
   \item Sistema operativo: Ubuntu 20.04 LTS o superior.
-  \item Memoria: Al menos 4 GB de RAM.
+  \item Memoria: Al menos 4 GB de RAM.\@
   \item Espacio en disco: 10 GB de espacio libre.
   \item Conexión a Internet para descargar las dependencias.
 \end{itemize}
@@ -105,21 +105,21 @@ Antes de comenzar la instalación, asegúrate de que tu sistema cumpla con los s
 \subsection{Herramientas necesarias}
 
 \begin{leftbar}
-  El proceso de instalación de las siguientes herramientas puede variar según el sistema operativo. Para usuarios de Ubuntu (GNU Linux), hemos facilitado este proceso con el script \texttt{dependencies.sh}. Encuentra detalles adicionales en el archivo \texttt{README.md} en nuestro repositorio de GitHub. Para problemas durante la instalación, consulta las secciones de 'Preguntas frecuentes' o 'Solución de problemas' en los sitios web de las herramientas.
+  El proceso de instalación de las siguientes herramientas puede variar según el sistema operativo. Para usuarios de Ubuntu (GNU Linux), hemos facilitado este proceso con el script \texttt{dependencies.sh}. Encuentra detalles adicionales en el archivo \texttt{README.md} en nuestro repositorio de GitHub. Para problemas durante la instalación, consulta las secciones de `Preguntas frecuentes' o `Solución de problemas' en los sitios web de las herramientas.
 \end{leftbar}
 
 La instalación de herramientas esenciales es el primer paso para asegurar un flujo de trabajo eficiente en el análisis sísmico. Por esto, es necesario instalar una serie de dependencias:
 
 \begin{itemize}
-  \item \textbf{rdseed}: Es utilizado para leer e interpretar archivos en formato SEED, el estándar de la Federación de Redes Sismográficas Digitales (FDSN, por sus siglas en inglés) para datos sísmicos. En nuestro proyecto, rdseed es utilizado para convertir datos descargados en formato miniSEED a SAC. En 2018 dejó de recibir soporte, sin embargo puedes descargar rdseed desde: \url{http://www.iris.edu/pub/programs/rdseedv5.3.1.tar.gz} o compilarlo desde el código fuente en: \url{https://github.com/iris-edu-legacy/rdseed}.
+  \item \textbf{rdseed}: Es utilizado para leer e interpretar archivos en formato SEED, el estándar de la Federación de Redes Sismográficas Digitales (FDSN, por sus siglas en inglés) para datos sísmicos. En nuestro proyecto, rdseed es utilizado para convertir datos descargados en formato miniSEED a SAC.\@ En 2018 dejó de recibir soporte, sin embargo puedes descargar rdseed desde: \url{http://www.iris.edu/pub/programs/rdseedv5.3.1.tar.gz} o compilarlo desde el código fuente en: \url{https://github.com/iris-edu-legacy/rdseed}.
 
-  \item \textbf{stationxml-seed-converter}: Es utilizado para convertir metadatos sísmicos entre los formatos dataless SEED y FDSN-StationXML. En nuestro proyecto, usamos esta herramienta para transformar metadatos descargados en formato XML a dataless SEED, lo que permite su posterior procesamiento con rdseed. Esta herramienta es un programa de línea de comandos escrito en Java, por lo que es importante tener Java instalado en el sistema. Descarga el conversor desde: \url{https://github.com/iris-edu/stationxml-seed-converter}.
+  \item \textbf{stationxml-seed-converter}: Es utilizado para convertir metadatos sísmicos entre los formatos dataless SEED y FDSN-StationXML.\@ En nuestro proyecto, usamos esta herramienta para transformar metadatos descargados en formato XML a dataless SEED, lo que permite su posterior procesamiento con rdseed. Esta herramienta es un programa de línea de comandos escrito en Java, por lo que es importante tener Java instalado en el sistema. Descarga el conversor desde: \url{https://github.com/iris-edu/stationxml-seed-converter}.
 
   \item \textbf{Java}: Importante para ejecutar el `stationxml-seed-converter`. En sistemas basados en Ubuntu, instala Java con el comando: \texttt{sudo apt install default-jre}.
 
   \item \textbf{Seismic Analysis Code (SAC)}: Este software se utiliza para el análisis detallado de eventos sísmicos. En nuestro proyecto, SAC es importante para operaciones posteriores de análisis y procesamiento de los datos sísmicos convertidos por rdseed. SAC no está disponible públicamente, pero puedes solicitarlo en: \url{http://ds.iris.edu/ds/nodes/dmc/forms/sac/}.
 
-  \item \textbf{Perl}: Un lenguaje de programación utilizado para ejecutar scripts que manejan archivos de datos sísmicos. Aunque no se usa directamente en nuestro script principal, Perl es útil para tareas de automatización y procesamiento de datos relacionados, como los proporcionados por algunas herramientas de rdseed y SAC. Instala Perl en Ubuntu con: \texttt{sudo apt install perl}.
+  \item \textbf{Perl}: Un lenguaje de programación utilizado para ejecutar scripts que manejan archivos de datos sísmicos. Aunque no se usa directamente en nuestro script principal, Perl es útil para tareas de automatización y procesamiento de datos relacionados, como los proporcionados por algunas herramientas de rdseed y SAC.\@ Instala Perl en Ubuntu con: \texttt{sudo apt install perl}.
 \end{itemize}
 
 \subsubsection{Pasos para la instalación}
@@ -152,7 +152,7 @@ Sigue estos pasos para preparar tu entorno de trabajo:
 
 \subsection{Preparación de datos}
 
-Antes de utilizar el modelo de Kikuchi y Kanamori \cite{Kik2003}, necesitas preparar tus datos en el formato SAC \footnote{SAC headers contienen información sobre la inclinación y el azimut.}. Para ello, utiliza el siguiente script de Python, el cual automatiza la descarga y el procesamiento inicial de los datos sismicos.
+Antes de utilizar el modelo de Kikuchi y Kanamori~\cite{Kik2003}, necesitas preparar tus datos en el formato SAC\footnote{SAC headers contienen información sobre la inclinación y el azimut.}. Para ello, utiliza el siguiente script de Python, el cual automatiza la descarga y el procesamiento inicial de los datos sismicos.
 
 \begin{enumerate}
 \item Ejecuta el script con Python:
@@ -192,7 +192,7 @@ De forma general, el script hace lo siguiente:
 
 \begin{enumerate}
   \item Define las estaciones sísmicas y los rangos de tiempo de interés.
-  \item Realiza solicitudes HTTP para descargar datos sísmicos en formato miniSEED y metadatos en formato XML utilizando las APIs brindadas por IRIS.
+  \item Realiza solicitudes HTTP para descargar datos sísmicos en formato miniSEED y metadatos en formato XML utilizando las APIs brindadas por IRIS.\@
   \item Convierte los metadatos XML a formato dataless SEED utilizando herramientas Java.
   \item Prepara los archivos miniSEED para su procesamiento posterior.
 \end{enumerate}
@@ -201,18 +201,18 @@ De forma general, el script hace lo siguiente:
 
 Para la automatización de los requests con la base de datos de SAGE (\textit{Seismological Facility for the Advancement of Geoscience}), se ha desarrollado el script \texttt{fetch\_and\_process.py}. Este script está concebido para facilitar la recolección eficiente de los datos sísmicos junto con sus respectivos metadatos. Es necesario, claro está, definir las estaciones apropiadas y los rangos de tiempo apropiados para el investigador.
 
-En el pasado, la adquisición de archivos en formato SAC se realizaba automáticamente a través del portal Wilber 3; sin embargo, dicha funcionalidad fue descontinuada en el 2021 en favor de los archivos miniSEED. A raíz de esto, es ahora requisito construir el archivo SAC manualmente, utilizando los datos obtenidos en formato miniSEED, complementándolos con los metadatos en el formato dataless y los polos y ceros necesarios.
+En el pasado, la adquisición de archivos en formato SAC se realizaba automáticamente a través del portal Wilber 3; sin embargo, dicha funcionalidad fue descontinuada en el 2021 en favor de los archivos miniSEED.\@ A raíz de esto, es ahora requisito construir el archivo SAC manualmente, utilizando los datos obtenidos en formato miniSEED, complementándolos con los metadatos en el formato dataless y los polos y ceros necesarios.
 
 \begin{itemize}
     \item \textbf{Metadatos:} El servicio web FDSN se emplea para obtener metadatos en formato XML, que ofrecen información detallada sobre las estaciones sísmicas, incluyendo sus ubicaciones, equipamiento y características de las señales registradas. Estos metadatos son cruciales para la interpretación correcta de los datos sísmicos.
-    \item \textbf{Datos Sísmicos:} Se descargan los registros sísmicos en formato miniSEED. Este formato es la elección estándar en la industria para el almacenamiento y transmisión de datos sísmicos debido a su eficiencia y amplia adopción, lo que asegura compatibilidad y facilidad de uso en diversas aplicaciones de análisis.
+    \item \textbf{Datos Sísmicos:} Se descargan los registros sísmicos en formato miniSEED.\@ Este formato es la elección estándar en la industria para el almacenamiento y transmisión de datos sísmicos debido a su eficiencia y amplia adopción, lo que asegura compatibilidad y facilidad de uso en diversas aplicaciones de análisis.
 \end{itemize}
 
 El script está configurado para procesar datos de múltiples estaciones sísmicas.
 
 \subsection{Verificación de archivos necesarios}
 
-Antes de proceder con la conversión de miniSEED a SAC, el script realiza una verificación para asegurarse de que todos los archivos necesarios estén presentes. Esto incluye la presencia de los archivos dataless y los archivos miniSEED. Si falta algún archivo, el script alertará al usuario y detendrá el proceso para evitar errores en el procesamiento posterior.
+Antes de proceder con la conversión de miniSEED a SAC, el script realiza una verificación para asegurarse de que todos los archivos necesarios estén presentes. Esto incluye la presencia de los archivos dataless y los archivos miniSEED.\@ Si falta algún archivo, el script alertará al usuario y detendrá el proceso para evitar errores en el procesamiento posterior.
 
 \subsection{Uso de \texttt{rdseed}}
 
