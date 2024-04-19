@@ -17,13 +17,27 @@
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
-  "git.untrackedChanges": "separate",
   "terminal.integrated.persistentSessionReviveProcess": "never",
   "terminal.integrated.tabs.enabled": true,
   "scm.diffDecorationsGutterWidth": 2,
   "debug.onTaskErrors": "debugAnyway",
   "diffEditor.ignoreTrimWhitespace": false,
   "search.exclude": {
-    "**/.git": true,
-  }
+    "**/.git": true
+  },
+  "latex-workshop.linting.chktex.enabled": true,
+  "latex-workshop.linting.run": "onSave",
+  "latex-workshop.linting.chktex.exec.path": "chktex",
+  "latex-workshop.linting.chktex.exec.args": [
+    "-wall",
+    "-n22",
+    "-n30",
+    "-e16",
+    "-q"
+  ],
+  "latex-workshop.linting.chktex.convertOutput.column.enabled": true,
+  "latex-workshop.linting.chktex.convertOutput.column.chktexrcTabSize": -1,
+  "latex-workshop.check.duplicatedLabels.enabled": true,
+  "latex-workshop.intellisense.update.aggressive.enabled": false,
+  "latex-workshop.intellisense.update.delay": 500
 }
