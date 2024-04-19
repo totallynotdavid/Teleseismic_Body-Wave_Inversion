@@ -50,5 +50,6 @@
             "username": "vscode",
             "upgradePackages": true
         }
-    }
+    },
+	"postCreateCommand": "tlmgr install hyphen-spanish"
 }
