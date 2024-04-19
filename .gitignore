@@ -4,6 +4,13 @@ RESP*
 
 /paper/build/*
 !/paper/build/*.pdf
+*.aux
+*.bbl
+*.blg
+*.fls
+*.out
+*.gz
+*.fdb_latexmk
 
 data/preprocesamiento/*
 
