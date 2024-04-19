@@ -92,7 +92,7 @@ RUN export TEXLIVE_INSTALL_NO_CONTEXT_CACHE=1 && \
 ENV PATH="/usr/local/texlive/${TEXLIVE_VERSION}/bin/x86_64-linux:${PATH}"
 
 RUN tlmgr update --self --all && \
-    tlmgr install latexmk latexindent booktabs xcolor tikz pgf pgfgantt textpos etoolbox babel-spanish refman fbb xstring xkeyval microtype enumitem listings menukeys adjustbox relsize framed ly1 cm-super && \
+    tlmgr install latexmk latexindent chktex booktabs xcolor tikz pgf pgfgantt textpos etoolbox babel-spanish refman fbb xstring xkeyval microtype enumitem listings menukeys adjustbox relsize framed ly1 cm-super hyphen-spanish && \
     tlmgr update --all && \
     texhash
 
